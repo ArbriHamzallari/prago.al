@@ -11,7 +11,7 @@ export function MultiPlatformSection() {
     <Section bg="cream" padding="lg" className="!pb-16">
       <div className="overflow-hidden rounded-2xl bg-sand">
         <div className="grid lg:grid-cols-2">
-          <div className="relative min-h-[360px] lg:min-h-[520px]">
+          <div className="relative min-h-[300px] sm:min-h-[360px] lg:min-h-[520px]">
             {/* TODO: replace with real Prago property photo */}
             <Image
               src={INTERIOR_PHOTOS[1]}
@@ -29,7 +29,7 @@ export function MultiPlatformSection() {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
+          <div className="flex flex-col justify-center p-6 sm:p-8 md:p-12 lg:p-16">
             <SerifHeading size="h2" className="text-charcoal">
               Listed everywhere guests look.
             </SerifHeading>
@@ -40,7 +40,7 @@ export function MultiPlatformSection() {
             <p className="mt-4 font-sans leading-relaxed text-stone">
               One calendar. One team. One dashboard. Zero double bookings.
             </p>
-            <Button href="#estimate" variant="charcoal" className="mt-8 w-fit">
+            <Button href="#estimate" variant="charcoal" className="mt-8 w-full sm:w-fit">
               Get started
             </Button>
           </div>

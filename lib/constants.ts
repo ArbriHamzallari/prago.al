@@ -205,3 +205,9 @@ export const INTERIOR_PHOTOS = [
 
 export const HERO_IMAGE =
   "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=2400&q=85";
+
+/** E.164 for tel:/sms: links (no spaces). display is human-readable. */
+export const CONTACT_PHONE = {
+  display: "+355 68 900 7252",
+  tel: "+355689007252"
+} as const;

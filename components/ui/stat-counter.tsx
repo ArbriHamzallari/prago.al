@@ -37,14 +37,16 @@ export function StatCounter({
 
   return (
     <div className="text-center">
-      <p className="font-serif text-4xl font-medium text-charcoal md:text-5xl">
+      <p className="font-serif text-3xl font-medium text-charcoal sm:text-4xl md:text-5xl">
         <span ref={ref}>
           {prefix}
           {decimals > 0 ? value.toFixed(decimals) : Math.round(value)}
           {suffix}
         </span>
       </p>
-      <p className="mt-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-stone">{label}</p>
+      <p className="mt-2 px-1 font-sans text-[10px] font-medium uppercase leading-snug tracking-[0.1em] text-stone sm:text-[11px] sm:tracking-[0.14em]">
+        {label}
+      </p>
     </div>
   );
 }

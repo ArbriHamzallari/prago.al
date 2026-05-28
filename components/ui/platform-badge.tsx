@@ -10,8 +10,13 @@ export function PlatformBadge({
   size?: "sm" | "md" | "lg";
 }) {
   const icon = getPlatformIcon(name);
-  const sizeClass = size === "lg" ? "h-20 w-20 md:h-24 md:w-24" : size === "sm" ? "h-14 w-14" : "h-16 w-16 md:h-20 md:w-20";
-  const svgSize = size === "lg" ? 36 : size === "sm" ? 24 : 30;
+  const sizeClass =
+    size === "lg"
+      ? "h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24"
+      : size === "sm"
+        ? "h-12 w-12 sm:h-14 sm:w-14"
+        : "h-16 w-16 md:h-20 md:w-20";
+  const svgSize = size === "lg" ? 28 : size === "sm" ? 22 : 30;
 
   return (
     <div

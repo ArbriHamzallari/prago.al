@@ -21,19 +21,21 @@ export function AudienceSection() {
         a key, a message, or a price again.
       </p>
 
-      <div className="mt-10 inline-flex flex-wrap gap-1 rounded-full bg-sand p-1.5">
-        {AUDIENCE_TABS.map((t, i) => (
-          <button
-            key={t.id}
-            type="button"
-            onClick={() => setActive(i)}
-            className={`rounded-full px-4 py-2.5 font-sans text-sm font-medium transition md:px-5 ${
-              active === i ? "bg-vishnje text-cream" : "text-charcoal hover:bg-cream/50"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="-mx-4 overflow-x-auto px-4 pb-1 sm:-mx-5 sm:px-5 lg:mx-0 lg:overflow-visible lg:px-0">
+        <div className="inline-flex min-w-max gap-1 rounded-full bg-sand p-1.5">
+          {AUDIENCE_TABS.map((t, i) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setActive(i)}
+              className={`shrink-0 rounded-full px-3.5 py-2 font-sans text-sm font-medium transition sm:px-4 sm:py-2.5 md:px-5 ${
+                active === i ? "bg-vishnje text-cream" : "text-charcoal hover:bg-cream/50"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="mt-10 overflow-hidden rounded-2xl bg-sand">
@@ -48,7 +50,7 @@ export function AudienceSection() {
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
-          <div className="flex flex-col justify-center p-8 md:p-12 lg:p-14">
+          <div className="flex flex-col justify-center p-6 sm:p-8 md:p-12 lg:p-14">
             <h3 className="font-serif text-2xl font-medium text-charcoal md:text-3xl">{tab.headline}</h3>
             <p className="mt-4 font-sans leading-relaxed text-stone">{tab.body}</p>
             <ul className="mt-8 space-y-4">

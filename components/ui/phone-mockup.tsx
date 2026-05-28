@@ -134,7 +134,7 @@ export function PhoneMockup({ screen }: { screen: Screen }) {
   const ScreenContent = SCREENS[screen];
   return (
     <div
-      className={`relative mx-auto w-[200px] shrink-0 sm:w-[220px] ${ROTATIONS[screen]}`}
+      className={`relative mx-auto w-[min(200px,42vw)] shrink-0 snap-center sm:w-[220px] ${ROTATIONS[screen]}`}
       aria-hidden
     >
       <div className="rounded-[2.5rem] border-[10px] border-charcoal bg-charcoal p-1 shadow-card">

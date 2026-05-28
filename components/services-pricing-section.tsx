@@ -69,7 +69,7 @@ export function ServicesPricingSection() {
         </div>
 
         <div id="pricing">
-          <div className="rounded-2xl bg-vishnje p-10 text-cream">
+          <div className="rounded-2xl bg-vishnje p-6 text-cream sm:p-8 md:p-10">
             <EyebrowLabel className="text-cream/70">COMMISSION-BASED PRICING</EyebrowLabel>
             <p className="mt-4 font-serif text-3xl font-medium leading-tight md:text-4xl">
               from 20% of your rental revenue

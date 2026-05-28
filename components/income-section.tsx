@@ -32,7 +32,7 @@ export function IncomeSection() {
         </Button>
       </div>
 
-      <div className="mt-16 flex flex-wrap items-end justify-center gap-4 md:gap-8">
+      <div className="-mx-4 mt-12 flex items-end gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-5 sm:mt-16 sm:px-5 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:pb-0 md:gap-8 lg:px-0 [&::-webkit-scrollbar]:hidden">
         <PhoneMockup screen="bookings" />
         <PhoneMockup screen="performance" />
         <PhoneMockup screen="calendar" />

@@ -13,16 +13,16 @@ const BOOKINGS = [
 
 export function CalendarMockupSection() {
   return (
-    <section className="relative overflow-hidden bg-vishnje py-24 md:py-32">
+    <section className="relative overflow-hidden bg-vishnje py-16 sm:py-24 md:py-32">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute -left-20 top-16 h-64 w-64 rounded-3xl bg-vishnje-soft/30" />
         <div className="absolute right-10 top-32 h-48 w-72 rounded-3xl bg-vishnje-soft/20" />
         <div className="absolute bottom-20 left-1/4 h-56 w-80 rounded-3xl bg-vishnje-soft/25" />
       </div>
 
-      <div className="relative mx-auto max-w-5xl px-5 lg:px-8">
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-5 lg:px-8">
         <div className="relative">
-          <div className="rounded-2xl bg-white p-6 shadow-card md:p-8">
+          <div className="rounded-2xl bg-white p-4 shadow-card sm:p-6 md:p-8">
             <div className="flex items-center justify-between gap-4">
               <button
                 type="button"
@@ -40,8 +40,8 @@ export function CalendarMockupSection() {
               </div>
             </div>
 
-            <div className="relative mt-6">
-              <div className="grid grid-cols-7 gap-px">
+            <div className="relative mt-4 overflow-x-auto sm:mt-6">
+              <div className="grid min-w-[300px] grid-cols-7 gap-px">
                 {WEEKDAYS.map((d) => (
                   <span key={d} className="pb-2 text-center font-sans text-xs font-medium text-stone">
                     {d}
@@ -52,7 +52,7 @@ export function CalendarMockupSection() {
                   return (
                     <div
                       key={i}
-                      className="relative min-h-[48px] border-t border-sand/40 pt-2 text-center font-sans text-xs text-stone"
+                      className="relative min-h-[40px] border-t border-sand/40 pt-1.5 text-center font-sans text-[10px] text-stone sm:min-h-[48px] sm:pt-2 sm:text-xs"
                     >
                       {day}
                     </div>
@@ -77,7 +77,9 @@ export function CalendarMockupSection() {
                       height={22}
                       className="rounded-full"
                     />
-                    <span className="truncate font-sans text-[10px] font-medium md:text-xs">{b.name}</span>
+                    <span className="hidden truncate font-sans text-[10px] font-medium min-[420px]:inline sm:text-xs">
+                      {b.name}
+                    </span>
                   </div>
                   <div
                     className="flex items-center justify-center"

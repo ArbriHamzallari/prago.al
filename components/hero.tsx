@@ -12,7 +12,6 @@ export function Hero() {
 
   return (
     <section className="relative w-full overflow-hidden pt-[72px]">
-      {/* Full-bleed background photo */}
       <div className="absolute inset-0 top-[72px] -z-10">
         <Image
           src={HERO_IMAGE}
@@ -28,12 +27,12 @@ export function Hero() {
       </div>
 
       {/* Content row: card on left, photography badge floating top-right on desktop */}
-      <div className="relative mx-auto flex min-h-[calc(100vh-72px)] max-w-7xl items-center px-5 py-12 md:px-8 md:py-16">
-        <div className="w-full max-w-[560px] rounded-2xl bg-cream p-6 shadow-card sm:p-8 md:p-10">
-          <EyebrowLabel className="text-charcoal">
+      <div className="relative mx-auto flex max-w-7xl items-center px-4 py-10 sm:px-5 sm:py-12 md:min-h-[calc(100vh-72px)] md:px-8 md:py-16">
+        <div className="w-full max-w-[560px] rounded-2xl bg-cream p-5 shadow-card sm:p-8 md:p-10">
+          <EyebrowLabel className="text-[10px] leading-relaxed tracking-[0.12em] text-charcoal sm:text-xs sm:tracking-[0.16em]">
             AI-POWERED PROPERTY MANAGEMENT · ALBANIA
           </EyebrowLabel>
-          <h1 className="mt-4 font-serif text-4xl font-medium leading-[1.05] text-charcoal sm:text-5xl xl:text-6xl">
+          <h1 className="mt-4 font-serif text-[1.75rem] font-medium leading-[1.08] text-charcoal min-[400px]:text-3xl sm:text-5xl xl:text-6xl">
             We run your property better than you do.
           </h1>
           <p className="mt-5 max-w-md font-sans text-base leading-relaxed text-stone">

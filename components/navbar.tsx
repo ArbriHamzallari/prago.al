@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { CONTACT_PHONE } from "@/lib/constants";
 import { Button } from "./ui/button";
 
 const NAV_LINKS = [
@@ -26,6 +27,15 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 bg-cream transition-shadow duration-300 ${
@@ -33,7 +43,7 @@ export function Navbar() {
       }`}
     >
       <nav
-        className={`mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 transition-all duration-300 lg:px-8 ${
+        className={`mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 transition-all duration-300 sm:px-5 lg:px-8 ${
           isScrolled ? "h-[60px]" : "h-[72px]"
         }`}
       >
@@ -41,7 +51,7 @@ export function Navbar() {
           href="#"
           aria-label="Prago home"
           className={`shrink-0 transition-all duration-300 ${
-            isScrolled ? "h-7 opacity-70" : "h-9 opacity-100"
+            isScrolled ? "h-7 opacity-70" : "h-8 sm:h-9 opacity-100"
           }`}
         >
           <Image
@@ -71,17 +81,18 @@ export function Navbar() {
             Free estimate
           </Button>
           <a
-            href="tel:+35500000000"
-            className="rounded-xl border border-charcoal px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-wide text-charcoal transition hover:bg-charcoal/5"
+            href={`tel:${CONTACT_PHONE.tel}`}
+            className="whitespace-nowrap rounded-xl border border-charcoal px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-wide text-charcoal transition hover:bg-charcoal/5"
           >
-            +355 XX XXX XXXX
+            {CONTACT_PHONE.display}
           </a>
         </div>
 
         <button
           type="button"
-          className="lg:hidden"
-          aria-label="Toggle menu"
+          className="relative z-[61] -mr-1 p-2 lg:hidden"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen((p) => !p)}
         >
           {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -94,21 +105,31 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-vishnje p-8 text-cream lg:hidden"
+            className="fixed inset-0 z-[60] flex flex-col bg-vishnje p-6 text-cream sm:p-8 lg:hidden"
+            style={{ paddingTop: "max(1.5rem, env(safe-area-inset-top))" }}
           >
             <div className="flex justify-end">
-              <button type="button" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
+              <button type="button" aria-label="Close menu" className="p-2" onClick={closeMenu}>
                 <X className="h-8 w-8" />
               </button>
             </div>
-            <div className="mt-12 flex flex-col gap-6 font-serif text-3xl">
+            <div className="mt-8 flex flex-1 flex-col gap-6 overflow-y-auto font-serif text-3xl sm:text-4xl">
               {NAV_LINKS.map((link) => (
-                <a key={link.label} href={link.href} onClick={() => setMenuOpen(false)}>
+                <a key={link.label} href={link.href} onClick={closeMenu}>
                   {link.label}
                 </a>
               ))}
-              <a href="#estimate" onClick={() => setMenuOpen(false)} className="font-sans text-lg uppercase">
+            </div>
+            <div className="mt-8 flex flex-col gap-3 border-t border-cream/20 pt-8">
+              <Button href="#estimate" variant="cream" className="w-full" onClick={closeMenu}>
                 Free estimate
+              </Button>
+              <a
+                href={`tel:${CONTACT_PHONE.tel}`}
+                onClick={closeMenu}
+                className="inline-flex w-full items-center justify-center rounded-xl border border-cream/40 px-6 py-3.5 font-sans text-sm font-medium uppercase tracking-wide text-cream transition hover:bg-cream/10"
+              >
+                {CONTACT_PHONE.display}
               </a>
             </div>
           </motion.div>

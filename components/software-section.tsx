@@ -21,7 +21,7 @@ function NetEarningsCard() {
 
 function OccupancyCard() {
   return (
-    <div className="w-[200px] rounded-2xl bg-white p-4 shadow-card">
+    <div className="w-full rounded-2xl bg-white p-4 shadow-card lg:w-[200px]">
       <div className="flex gap-1 text-[10px] text-stone">
         <span className="rounded-full bg-sand px-2 py-0.5">Last month</span>
         <span>6 Months</span>
@@ -62,7 +62,7 @@ function ActivityFeedCard() {
     { label: "Booking Approved", time: "4 days ago" }
   ];
   return (
-    <div className="w-[220px] rounded-2xl bg-white p-4 shadow-card">
+    <div className="w-full rounded-2xl bg-white p-4 shadow-card lg:w-[220px]">
       <p className="font-sans text-sm font-semibold text-charcoal">Activity Feed</p>
       <ul className="mt-3 space-y-3">
         {items.map((item) => (
@@ -88,8 +88,16 @@ export function SoftwareSection() {
 
   return (
     <Section bg="cream">
-      <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-        <div className="relative mx-auto h-[380px] w-full max-w-md md:h-[420px]">
+      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="mx-auto flex w-full max-w-md flex-col gap-4 lg:hidden">
+          <NetEarningsCard />
+          <ActivityFeedCard />
+          <div className="mx-auto w-full max-w-[200px]">
+            <OccupancyCard />
+          </div>
+        </div>
+
+        <div className="relative mx-auto hidden h-[420px] w-full max-w-md lg:block">
           <div className="absolute left-0 top-0 w-[85%]">
             <NetEarningsCard />
           </div>

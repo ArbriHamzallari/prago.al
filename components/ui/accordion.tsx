@@ -26,7 +26,7 @@ export function Accordion({
             <div key={item.id} className="overflow-hidden rounded-2xl border border-sand bg-white shadow-sm">
               <button
                 type="button"
-                className="flex w-full items-center justify-between px-6 py-5 text-left font-sans font-medium text-charcoal"
+                className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left font-sans text-sm font-medium text-charcoal sm:px-6 sm:py-5 sm:text-base"
                 onClick={() => setOpenIndex(isOpen ? null : index)}
               >
                 <span>{item.label}</span>
@@ -41,7 +41,9 @@ export function Accordion({
                     transition={{ duration: 0.25 }}
                     className="overflow-hidden"
                   >
-                    <p className="px-6 pb-5 font-sans text-stone">{item.description}</p>
+                    <p className="px-4 pb-4 font-sans text-sm text-stone sm:px-6 sm:pb-5 sm:text-base">
+                      {item.description}
+                    </p>
                   </motion.div>
                 )}
               </AnimatePresence>

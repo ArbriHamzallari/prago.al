@@ -39,7 +39,7 @@ export function EstimateSection() {
 
         <form
           onSubmit={onSubmit}
-          className="rounded-2xl bg-cream p-8 text-charcoal shadow-card"
+          className="rounded-2xl bg-cream p-5 text-charcoal shadow-card sm:p-8"
         >
           <div className="grid gap-4">
             <select name="location" required className={fieldClass} defaultValue="">

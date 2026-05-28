@@ -8,8 +8,8 @@ const BG: Record<string, string> = {
 };
 
 const PADDING: Record<string, string> = {
-  lg: "py-24 md:py-32",
-  md: "py-16 md:py-24"
+  lg: "py-16 sm:py-24 md:py-32",
+  md: "py-12 sm:py-16 md:py-24"
 };
 
 export function Section({
@@ -27,7 +27,7 @@ export function Section({
 }) {
   return (
     <section id={id} className={`${BG[bg]} ${PADDING[padding]} ${className}`}>
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">{children}</div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">{children}</div>
     </section>
   );
 }
