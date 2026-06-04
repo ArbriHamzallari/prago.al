@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CONTACT_PHONE } from "@/lib/constants";
+import { CONTACT_PHONE, CONTACT_WHATSAPP } from "@/lib/constants";
 
 export function Footer() {
   return (
@@ -12,6 +12,15 @@ export function Footer() {
           <p className="mt-4 flex flex-col gap-1 font-sans text-sm text-cream/75 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1">
             <a href={`tel:${CONTACT_PHONE.tel}`} className="hover:text-cream">
               {CONTACT_PHONE.display}
+            </a>
+            <span className="hidden sm:inline"> · </span>
+            <a
+              href={CONTACT_WHATSAPP.url}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-cream"
+            >
+              {CONTACT_WHATSAPP.label}
             </a>
             <span className="hidden sm:inline"> · </span>
             <a href="mailto:stay@prago.al" className="hover:text-cream">

@@ -208,6 +208,11 @@ export const HERO_IMAGE =
 
 /** E.164 for tel:/sms: links (no spaces). display is human-readable. */
 export const CONTACT_PHONE = {
-  display: "+355 68 900 7252",
-  tel: "+355689007252"
+  display: "+355 68 666 9060",
+  tel: "+355686669060"
+} as const;
+
+export const CONTACT_WHATSAPP = {
+  url: "https://wa.me/message/VMQY23EBVHNWM1",
+  label: "WhatsApp"
 } as const;
