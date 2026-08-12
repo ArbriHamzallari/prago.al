@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CONTACT_PHONE, CONTACT_WHATSAPP } from "@/lib/constants";
+import { CONTACT_PHONE } from "@/lib/constants";
 import { Button } from "./ui/button";
 
 const NAV_LINKS = [
@@ -81,14 +81,6 @@ export function Navbar() {
             Free estimate
           </Button>
           <a
-            href={CONTACT_WHATSAPP.url}
-            target="_blank"
-            rel="noreferrer"
-            className="whitespace-nowrap rounded-xl border border-charcoal px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-wide text-charcoal transition hover:bg-charcoal/5"
-          >
-            {CONTACT_WHATSAPP.label}
-          </a>
-          <a
             href={`tel:${CONTACT_PHONE.tel}`}
             className="whitespace-nowrap rounded-xl border border-charcoal px-5 py-2.5 font-sans text-xs font-medium uppercase tracking-wide text-charcoal transition hover:bg-charcoal/5"
           >
@@ -132,15 +124,6 @@ export function Navbar() {
               <Button href="#estimate" variant="cream" className="w-full" onClick={closeMenu}>
                 Free estimate
               </Button>
-              <a
-                href={CONTACT_WHATSAPP.url}
-                target="_blank"
-                rel="noreferrer"
-                onClick={closeMenu}
-                className="inline-flex w-full items-center justify-center rounded-xl border border-cream/40 px-6 py-3.5 font-sans text-sm font-medium uppercase tracking-wide text-cream transition hover:bg-cream/10"
-              >
-                {CONTACT_WHATSAPP.label}
-              </a>
               <a
                 href={`tel:${CONTACT_PHONE.tel}`}
                 onClick={closeMenu}

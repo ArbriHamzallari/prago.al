@@ -1,30 +1,17 @@
-"use client";
-
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { INTERIOR_PHOTOS, SERVICE_CATEGORIES } from "@/lib/constants";
+import { SERVICE_CATEGORIES } from "@/lib/constants";
 import { Button } from "./ui/button";
 import { EyebrowLabel } from "./ui/eyebrow-label";
 import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
 
 export function ServicesPricingSection() {
-  const [photoIndex, setPhotoIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setPhotoIndex((i) => (i + 1) % INTERIOR_PHOTOS.length);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <Section id="services" bg="cream">
       <SerifHeading size="h1" className="max-w-2xl text-charcoal">
         One flat fee. We handle all of it.
       </SerifHeading>
 
-      <div className="mt-14 grid gap-12 lg:grid-cols-3 lg:gap-10">
+      <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-10">
         <div className="space-y-10">
           {SERVICE_CATEGORIES.map((cat) => (
             <div key={cat.label}>
@@ -40,32 +27,6 @@ export function ServicesPricingSection() {
               </ul>
             </div>
           ))}
-        </div>
-
-        <div>
-          <div className="relative aspect-[3/4] overflow-hidden rounded-2xl">
-            {/* TODO: replace with real Prago property photo */}
-            <Image
-              src={INTERIOR_PHOTOS[photoIndex]}
-              alt="Property management in action"
-              fill
-              className="object-cover transition-opacity duration-500"
-              sizes="(max-width: 1024px) 100vw, 33vw"
-            />
-          </div>
-          <div className="mt-4 flex justify-center gap-2">
-            {INTERIOR_PHOTOS.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Photo ${i + 1}`}
-                onClick={() => setPhotoIndex(i)}
-                className={`h-2 w-2 rounded-full transition ${
-                  i === photoIndex ? "bg-vishnje" : "bg-sand"
-                }`}
-              />
-            ))}
-          </div>
         </div>
 
         <div id="pricing">
