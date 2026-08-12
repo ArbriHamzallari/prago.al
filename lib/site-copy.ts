@@ -86,6 +86,29 @@ export const SITE_COPY = {
         }
       ],
       cta: "MERRNI VLERËSIMIN FILLESTAR"
+    },
+    propertyStory: {
+      eyebrow: "Rast në përgatitje",
+      h2: "Coastal Paradise: nga prona te një eksperiencë e gatshme për vizitorë.",
+      body: "Prago po dokumenton çdo hap të përgatitjes së kësaj prone — nga paraqitja dhe fotografitë, te organizimi i operacioneve dhe standardi i pritjes.",
+      disclosure: "Rezultatet do të publikohen vetëm pasi të ketë të dhëna të verifikueshme.",
+      gridLabel: "Punë në proces"
+    },
+    ownerVisibility: {
+      eyebrow: "TRANSPARENCË PËR PRONARIN",
+      h2: "Kontrolli mbetet te ju.",
+      body: "Çdo muaj merrni një pasqyrë të rezervimeve, të ardhurave, kostove dhe çështjeve operative. Kur ka një vendim që kërkon miratimin tuaj, ju njoftojmë.",
+      caption: "Shembull i raportit mujor — të dhënat janë anonimizuar.",
+      items: ["Rezervimet", "Të ardhurat", "Kostot", "Çështjet operative"]
+    },
+    pricing: {
+      eyebrow: "TARIFË E QARTË",
+      // The "20%" itself is interpolated from SITE_FACTS.feePercent at render time, not
+      // hardcoded here — see components/pricing.tsx. This is only the text that follows it.
+      titleSuffix: "për menaxhimin e plotë.",
+      includes: "Menaxhimi i listimit, çmimit, kalendarit, komunikimit me vizitorët, koordinimit të operacioneve dhe raportimit për pronarin.",
+      disclosure: "Kostot e mirëmbajtjes, materialeve dhe shërbimeve të palëve të treta paraqiten veçmas kur aplikohen.",
+      cta: "MERRNI VLERËSIMIN FILLESTAR"
     }
   }
   // TODO(Prompt 6): add an `en` key with the same shape once English copy is locked.

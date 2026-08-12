@@ -231,6 +231,63 @@ exactly 44×44px (logo link, SQ/EN links, compact WhatsApp button), focus-visibl
 confirmed present across 9 sequential tab stops, hero CTA+helper text confirmed visible with no
 overlap on a 390×844 viewport, and `/sq`→`/` /`/en` `<html lang>` behavior re-confirmed intact.
 
+## 8. Implemented in Prompt 4 (property story, owner visibility, pricing) — NOT YET COMMITTED
+
+**Pending real assets (placeholder paths only, no image files created, zero stock imagery
+used anywhere):**
+- `public/images/website/case-01.webp` — PropertyStory's large image (left on desktop, first
+  photo on mobile). Pending real Coastal Paradise photography.
+- `public/images/website/case-02.webp`, `case-03.webp`, `case-04.webp` — the 2×2 grid's three
+  general prep/process shots. Same pending status.
+- `public/images/website/case-05-detail.webp` — the grid's fourth image, specifically a
+  guest-ready *detail* crop (close-up of a finished/staged element) rather than another
+  general prep shot — named separately so whoever supplies the real photo knows which shot
+  goes here.
+- `public/images/website/owner-report.webp` (1800×1125px) — OwnerVisibility's single
+  screenshot. Pending the real, **redacted** monthly-report export from Arbri. Do not
+  substitute a mocked-up dashboard in the meantime; the section renders with a broken-image
+  placeholder until this lands, which is the intended state per the prompt.
+
+**Copy additions:** `lib/site-copy.ts` gained `propertyStory`, `ownerVisibility`, and `pricing`
+keys under `SITE_COPY.sq`, same pattern as Prompt 3 (locale prop wired on every component,
+copy resolution currently `locale === "en" ? SITE_COPY.sq.x : SITE_COPY.sq.x` pending Prompt 6).
+Pricing's "20%" is never hardcoded as a literal string — both the large decorative figure and
+the H2 interpolate `SITE_FACTS.feePercent`, and the rule sentence renders `SITE_FACTS.feeBasisSq`
+directly rather than a copy of it, so every "20%" on the page traces to the same two fields in
+one file.
+
+**Component API fix carried over from the Prompt 3 lesson:** `EyebrowLabel` had the same
+hardcoded-base-class problem `Button` did (unconditional `text-stone` fighting a caller's
+color override). Fixed the same way — a real `tone` prop (`stone` default, `cream` for
+Pricing's burgundy background) instead of a conflicting className override.
+
+**Reading-order technique:** PropertyStory, OwnerVisibility, and Pricing all need different
+visual arrangements on mobile vs. desktop (e.g., Pricing's big "20%" figure appears first
+visually on mobile but must stay *after* the H2/fee-rule in DOM order for screen readers, per
+the prompt's explicit instruction). All three use a single non-duplicated DOM tree with
+Tailwind's `order`/grid placement utilities to achieve this, rather than rendering two parallel
+mobile/desktop copies of the content (the approach used for Hero/ProcessSteps in Prompt 3).
+This avoids duplicate-id and duplicate-image-request issues and is the pattern to prefer going
+forward when mobile and desktop need genuinely different structure, not just different sizing.
+
+**Blocking item — did not commit, per the prompt's own "STOP before committing" instruction:**
+Pricing's Rule and Disclosure text must be checked against the actual signed management
+agreement. I have no access to that document — it isn't in this repository (searched for
+`*agreement*`, `*contract*`, `*kontrat*`, found nothing) and wasn't provided in this
+conversation. `feeBasisSq` in `lib/site-facts.ts` is unchanged from what Prompt 1 already
+established as a locked site fact — I have not modified it, guessed at it, or verified it.
+**Please confirm the fee rule and disclosure text are accurate before this ships**, or send me
+the corrected wording and I'll update `feeBasisSq` (only that field, not the component) and
+commit. Everything else in this prompt is built, verified (Playwright screenshots + the
+required greps below), and ready — only this one field needs your sign-off.
+
+**Verified:** `npm run build` + `npm run lint` clean; zero `unsplash`/`pravatar` matches; zero
+`"from 20%"` matches in rendered output; every `"20%"` occurrence traces to
+`SITE_FACTS.feePercent`/`feeBasisSq`; zero `Overview`/`Housekeeping`/`Maintenance` fake-tab
+labels (one false-positive `calendar` match is just lucide's `CalendarCheck` icon CSS class);
+zero named demo guests; Pricing's mobile DOM-vs-visual order confirmed via Playwright
+(`h2Top: 5481.75` in DOM after, `figureTop: 5311.75` visually before).
+
 ## 5. Summary
 
 - Stack confirmed: Next.js 16 (App Router) / React 19 / Tailwind v4 (CSS-first, currently
