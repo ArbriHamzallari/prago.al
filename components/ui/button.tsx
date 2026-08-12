@@ -24,7 +24,7 @@ export function Button({
   onClick?: () => void;
 }) {
   const base =
-    "inline-flex items-center justify-center rounded-xl px-6 py-3 font-sans text-sm font-medium uppercase tracking-wide transition hover:-translate-y-0.5";
+    "inline-flex min-h-[52px] items-center justify-center rounded-card px-[24px] py-3 font-sans text-sm font-medium uppercase tracking-wide transition hover:-translate-y-0.5";
 
   const classes = `${base} ${VARIANTS[variant]} ${className}`;
 

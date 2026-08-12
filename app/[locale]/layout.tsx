@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -20,13 +20,21 @@ export const metadata: Metadata = {
     "Prago helps Albanian property owners earn more with AI pricing, instant guest responses, and full-service local operations."
 };
 
-export default function RootLayout({
-  children
-}: Readonly<{
+export function generateStaticParams() {
+  return [{ locale: "sq" }, { locale: "en" }];
+}
+
+export default async function LocaleLayout({
+  children,
+  params
+}: {
   children: React.ReactNode;
-}>) {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${fraunces.variable} ${inter.variable} font-sans antialiased`}>{children}</body>
     </html>
   );

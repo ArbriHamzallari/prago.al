@@ -7,27 +7,20 @@ const BG: Record<string, string> = {
   white: "bg-white"
 };
 
-const PADDING: Record<string, string> = {
-  lg: "py-16 sm:py-24 md:py-32",
-  md: "py-12 sm:py-16 md:py-24"
-};
-
 export function Section({
   id,
   children,
   bg = "cream",
-  padding = "lg",
   className = ""
 }: {
   id?: string;
   children: ReactNode;
   bg?: keyof typeof BG;
-  padding?: keyof typeof PADDING;
   className?: string;
 }) {
   return (
-    <section id={id} className={`${BG[bg]} ${PADDING[padding]} ${className}`}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">{children}</div>
+    <section id={id} className={`${BG[bg]} py-[64px] md:py-[80px] lg:py-[112px] ${className}`}>
+      <div className="mx-auto max-w-content px-[20px] md:px-[24px] lg:px-[32px]">{children}</div>
     </section>
   );
 }

@@ -1,10 +1,13 @@
 import { ReactNode } from "react";
 
+// Max flowing-text width for h1 where it wraps as a headline paragraph, not a fixed label.
+export const H1_MAX_WIDTH = "680px";
+
 const SIZES = {
   display: "text-4xl font-medium leading-[1.05] sm:text-5xl md:text-6xl lg:text-[4rem]",
-  h1: "text-3xl font-medium leading-tight sm:text-4xl md:text-5xl lg:text-[3.5rem]",
-  h2: "text-3xl font-medium leading-tight md:text-4xl lg:text-[2.75rem]",
-  h3: "text-2xl font-medium leading-snug md:text-3xl"
+  h1: "text-[38px] font-medium leading-[42px] md:text-[52px] md:leading-[56px] lg:text-[64px] lg:leading-[68px]",
+  h2: "text-[32px] font-medium leading-[36px] md:text-[40px] md:leading-[44px] lg:text-[48px] lg:leading-[52px]",
+  h3: "text-[24px] font-medium leading-[30px] md:text-[26px] md:leading-[32px] lg:text-[30px] lg:leading-[36px]"
 };
 
 export function SerifHeading({

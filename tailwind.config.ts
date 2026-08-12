@@ -15,8 +15,7 @@ const config: Config = {
         cream: "#FAF6F1",
         sand: "#E8DDD0",
         charcoal: "#1C1917",
-        stone: "#8A8079",
-        "booking-blue": "#3B5BA5"
+        stone: "#6F655F"
       },
       fontFamily: {
         serif: ["var(--font-fraunces)", "Georgia", "serif"],
@@ -26,7 +25,12 @@ const config: Config = {
         card: "0 20px 60px -20px rgba(28,25,23,0.15)"
       },
       borderRadius: {
-        "2xl": "16px"
+        "2xl": "16px",
+        card: "12px",
+        hero: "20px"
+      },
+      maxWidth: {
+        content: "1200px"
       }
     }
   },
