@@ -1,3 +1,7 @@
+import { Faq } from "@/components/faq-section";
+import { FinalCta } from "@/components/final-cta";
+import { FloatingWhatsApp } from "@/components/floating-whatsapp";
+import { SiteFooter } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { ProcessSteps } from "@/components/how-it-works-section";
 import { Pricing } from "@/components/pricing";
@@ -12,15 +16,21 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   const { locale } = await params;
 
   return (
-    <main>
-      <SiteHeader locale={locale} />
-      <Hero locale={locale} />
-      <TrustBand locale={locale} />
-      <ServiceScope locale={locale} />
-      <ProcessSteps locale={locale} />
-      <PropertyStory locale={locale} />
-      <OwnerVisibility locale={locale} />
-      <Pricing locale={locale} />
-    </main>
+    <>
+      <main>
+        <SiteHeader locale={locale} />
+        <Hero locale={locale} />
+        <TrustBand locale={locale} />
+        <ServiceScope locale={locale} />
+        <ProcessSteps locale={locale} />
+        <PropertyStory locale={locale} />
+        <OwnerVisibility locale={locale} />
+        <Pricing locale={locale} />
+        <Faq locale={locale} />
+        <FinalCta locale={locale} />
+      </main>
+      <SiteFooter locale={locale} />
+      <FloatingWhatsApp />
+    </>
   );
 }

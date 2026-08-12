@@ -1,43 +1,57 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CONTACT_PHONE } from "@/lib/constants";
+import { SITE_COPY, type Locale } from "@/lib/site-copy";
+import { SITE_FACTS } from "@/lib/site-facts";
 
-export function Footer() {
+export function SiteFooter({ locale }: { locale: Locale }) {
+  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
+  const copy = locale === "en" ? SITE_COPY.sq.footer : SITE_COPY.sq.footer;
+  const year = new Date().getFullYear();
+  const otherLocaleHref = locale === "en" ? "/" : "/en";
+  const localePrefix = locale === "en" ? "/en" : "";
+
   return (
-    <footer className="bg-vishnje-dark px-5 py-12 text-cream sm:py-16 lg:px-8">
-      <div className="mx-auto flex max-w-7xl flex-col gap-10 md:flex-row md:items-end md:justify-between">
+    <footer id="site-footer" className="bg-vishnje-dark px-[20px] py-[64px] text-cream md:px-[24px] lg:px-[32px]">
+      <div className="mx-auto grid max-w-content gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
         <div>
-          <Image src="/logo/prago-logo-white.jpeg" alt="Prago" width={120} height={36} />
-          <p className="mt-4 font-serif text-lg">We manage. You earn.</p>
-          <p className="mt-4 flex flex-col gap-1 font-sans text-sm text-cream/75 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1">
-            <a href={`tel:${CONTACT_PHONE.tel}`} className="hover:text-cream">
-              {CONTACT_PHONE.display}
-            </a>
-            <span className="hidden sm:inline"> · </span>
-            <a href="mailto:stay@prago.al" className="hover:text-cream">
-              stay@prago.al
-            </a>
-            <span className="hidden sm:inline"> · </span>
-            <a
-              href="https://www.instagram.com/prago.al/"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-cream"
-            >
-              Instagram
-            </a>
-          </p>
+          <Image src="/logo/prago-logo-white.jpeg" alt="Prago" width={120} height={36} className="h-9 w-auto" />
+          <p className="mt-4 font-serif text-lg">{copy.tagline}</p>
         </div>
 
-        <div className="font-sans text-sm text-cream/60">
-          <div className="flex flex-wrap gap-x-4 gap-y-1">
-            <Link href="#how-it-works">How it works</Link>
-            <Link href="#services">Services</Link>
-            <Link href="#why-prago">Why Prago</Link>
-            <Link href="#faq">FAQ</Link>
-          </div>
-          <p className="mt-4">© 2026 Prago. Property management, Albania.</p>
+        <div className="font-sans text-sm text-cream/80">
+          <a href={`tel:+${SITE_FACTS.whatsappDigits}`} className="block hover:text-cream">
+            {SITE_FACTS.whatsappDisplay}
+          </a>
+          <a href={`mailto:${SITE_FACTS.email}`} className="mt-2 block hover:text-cream">
+            {SITE_FACTS.email}
+          </a>
+          <a
+            href={SITE_FACTS.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 block hover:text-cream"
+          >
+            Instagram
+          </a>
         </div>
+
+        <div className="font-sans text-sm text-cream/80">{SITE_FACTS.serviceAreaSq}</div>
+
+        <div className="font-sans text-sm text-cream/80">
+          <Link href={`${localePrefix}/privacy`} className="block hover:text-cream">
+            {copy.legalLinks.privacy}
+          </Link>
+          <Link href={`${localePrefix}/terms`} className="mt-2 block hover:text-cream">
+            {copy.legalLinks.terms}
+          </Link>
+          <Link href={otherLocaleHref} className="mt-2 block hover:text-cream">
+            {copy.legalLinks.english}
+          </Link>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-10 max-w-content border-t border-cream/20 pt-6 font-sans text-xs text-cream/60">
+        {SITE_FACTS.legalName} · NIPT {SITE_FACTS.nipt} · © {year} Prago
       </div>
     </footer>
   );

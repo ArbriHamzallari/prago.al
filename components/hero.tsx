@@ -9,11 +9,13 @@ import { BodyText } from "./ui/body-text";
 function HeroPanel({
   copy,
   whatsappUrl,
-  className = ""
+  className = "",
+  ctaId
 }: {
   copy: (typeof SITE_COPY)["sq"]["hero"];
   whatsappUrl: string;
   className?: string;
+  ctaId?: string;
 }) {
   return (
     <div className={className}>
@@ -23,6 +25,7 @@ function HeroPanel({
       </SerifHeading>
       <BodyText className="mt-5 text-stone">{copy.body}</BodyText>
       <Button
+        id={ctaId}
         href={whatsappUrl}
         target="_blank"
         rel="noreferrer"
@@ -66,7 +69,7 @@ export function Hero({ locale }: { locale: Locale }) {
       </div>
 
       <div className="px-[20px] py-[36px] lg:hidden">
-        <HeroPanel copy={copy} whatsappUrl={whatsappUrl} />
+        <HeroPanel copy={copy} whatsappUrl={whatsappUrl} ctaId="hero-cta-mobile" />
       </div>
     </section>
   );

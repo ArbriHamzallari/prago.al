@@ -25,6 +25,7 @@ export function Button({
   onClick,
   target,
   rel,
+  id,
   "aria-label": ariaLabel
 }: {
   children: ReactNode;
@@ -36,6 +37,7 @@ export function Button({
   onClick?: () => void;
   target?: string;
   rel?: string;
+  id?: string;
   "aria-label"?: string;
 }) {
   const base =
@@ -45,14 +47,22 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={classes} onClick={onClick} target={target} rel={rel} aria-label={ariaLabel}>
+      <Link
+        id={id}
+        href={href}
+        className={classes}
+        onClick={onClick}
+        target={target}
+        rel={rel}
+        aria-label={ariaLabel}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} className={classes} onClick={onClick} aria-label={ariaLabel}>
+    <button id={id} type={type} className={classes} onClick={onClick} aria-label={ariaLabel}>
       {children}
     </button>
   );

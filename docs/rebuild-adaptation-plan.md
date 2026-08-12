@@ -288,6 +288,60 @@ labels (one false-positive `calendar` match is just lucide's `CalendarCheck` ico
 zero named demo guests; Pricing's mobile DOM-vs-visual order confirmed via Playwright
 (`h2Top: 5481.75` in DOM after, `figureTop: 5311.75` visually before).
 
+## 9. Implemented in Prompt 5 (FAQ, final CTA, footer, floating WhatsApp)
+
+**Pending real asset:** `public/images/website/final-cta.webp` — FinalCta's right-side photo.
+Placeholder path only, same pattern as every other pending image in this rebuild.
+
+**Two files deleted as dead code, both previously flagged as eventual cleanups:**
+- `lib/constants.ts` — Prompt 1 explicitly left `SERVICE_CATEGORIES` and `FAQS` in place with
+  a note that once their content migrated into `lib/site-copy.ts` (Prompt 3 did
+  `SERVICE_CATEGORIES`, this prompt did `FAQS`), the whole file could go. Confirmed zero
+  remaining imports (`CONTACT_PHONE`/`CONTACT_WHATSAPP`/`SERVICES` were already unused from
+  earlier prompts) before deleting.
+- `components/ui/accordion.tsx` — the prompt's opening instruction pointed at this file's
+  "faq" variant as the thing to add ARIA to, but the acceptance criteria demanded
+  `aria-expanded`/`aria-controls` grep-match **inside `components/faq-section.tsx` itself**,
+  and the exact markup given (`id={faq-button-${index}}`, native `hidden` instead of animated
+  height) didn't fit the shared component's generic `{label, description}` abstraction
+  cleanly. Resolved by inlining the accordion directly into `faq-section.tsx` as a
+  self-contained implementation, which left the shared `Accordion` (both its "faq" and the
+  already-orphaned "software" variant) with zero remaining callers — deleted rather than left
+  as unreferenced dead code.
+
+**Routing extended, not just added to:** the footer's `/privacy` and `/terms` links needed to
+resolve without 404ing per this prompt's explicit instruction, but they also needed to respect
+the same "Albanian unprefixed, English under `/en`" rule as the homepage. Rather than special-
+casing these two links, `middleware.ts`'s single `"/"` rewrite became a small
+`SQ_ROOT_PATHS` list (`"/"`, `"/privacy"`, `"/terms"`) so the pattern generalizes to future
+top-level pages too. `app/[locale]/privacy/page.tsx` and `app/[locale]/terms/page.tsx` are
+minimal stub pages (heading + one placeholder sentence) — Prompt 7 replaces the content, the
+routing/shell is already correct.
+
+**Copy additions:** `faq`, `finalCta`, and `footer` keys added to `SITE_COPY.sq`. One thing I
+added that wasn't in the locked copy tables: the FAQ section's heading text, "Pyetje të
+shpeshta" ("Frequently asked questions") — every other section had an explicit H2/eyebrow in
+its copy table, FAQ's table only had the 6 Q&A pairs. Chose a purely structural, non-marketing
+label (mirrors the nav link "Pyetje") rather than leave the section headerless — flagging in
+case you'd rather lock specific wording here.
+
+**Footer still renders bracketed placeholders verbatim** — `SITE_FACTS.serviceAreaSq`,
+`legalName`, and `nipt` are unchanged from Prompt 1's `[INSERT ...]` placeholders (per Prompt
+1's explicit "do not invent values" instruction), so the live footer currently shows
+`[INSERT CURRENT SERVICE AREA]`, `[INSERT EXACT REGISTERED NAME]`, and `[INSERT NIPT]`
+literally. **This needs your input before the site ships** — same visibility as the fee-basis
+check from Prompt 4, just three more fields.
+
+**Verified:** `npm run build` + `npm run lint` clean; all of `/`, `/en`, `/privacy`, `/terms`,
+`/en/privacy`, `/en/terms` return `200` (zero 404s), `/sq*` still redirects to `/`; FAQ verified
+via Playwright — first item open on desktop / all closed on mobile, `aria-expanded` and the
+`hidden` panel attribute both update synchronously on Enter and on Space, keyboard Tab reaches
+all 6 buttons in sequence, opening an item causes zero `scrollWidth` change (no horizontal
+shift); FloatingWhatsApp verified hidden while the hero CTA is in view, visible once scrolled
+past it, and hidden again at both FinalCta and the footer — confirmed programmatically that no
+footer-link overlap is possible since the button is already hidden by the time the footer
+enters view.
+
 ## 5. Summary
 
 - Stack confirmed: Next.js 16 (App Router) / React 19 / Tailwind v4 (CSS-first, currently

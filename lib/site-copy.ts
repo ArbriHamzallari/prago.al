@@ -109,6 +109,55 @@ export const SITE_COPY = {
       includes: "Menaxhimi i listimit, çmimit, kalendarit, komunikimit me vizitorët, koordinimit të operacioneve dhe raportimit për pronarin.",
       disclosure: "Kostot e mirëmbajtjes, materialeve dhe shërbimeve të palëve të treta paraqiten veçmas kur aplikohen.",
       cta: "MERRNI VLERËSIMIN FILLESTAR"
+    },
+    faq: {
+      title: "Pyetje të shpeshta",
+      items: [
+        {
+          question: "Çfarë përfshin tarifa 20%?",
+          answer:
+            "Tarifa mbulon menaxhimin e listimit, çmimit, kalendarit, komunikimit me vizitorët, koordinimit të hyrje-daljeve, operacioneve dhe raportimit mujor. Kostot e mirëmbajtjes, materialeve dhe shërbimeve të palëve të treta paraqiten veçmas kur aplikohen."
+        },
+        {
+          question: "Si e përcaktoni çmimin për natë?",
+          answer:
+            "Çmimi rishikohet sipas kërkesës, sezonit, ditëve të javës, eventeve dhe performancës reale të pronës. Prago nuk garanton të ardhura ose zënie fikse."
+        },
+        {
+          question: "A mund ta përdor pronën kur dua?",
+          answer:
+            "Datat e përdorimit nga pronari bllokohen në kalendar me njoftim paraprak, sipas kushteve të marrëveshjes së menaxhimit."
+        },
+        {
+          question: "Kush paguan pastrimin dhe mirëmbajtjen?",
+          answer:
+            "Tarifa e pastrimit dhe mënyra e faturimit përcaktohen në listim dhe në marrëveshje. Mirëmbajtja dhe materialet i komunikohen pronarit sipas procedurës së miratimit të përcaktuar në kontratë."
+        },
+        {
+          question: "Çfarë pronash pranon Prago?",
+          answer:
+            "Vlerësojmë vendndodhjen, gjendjen, kapacitetin, aksesin, disponueshmërinë dhe potencialin operativ. Jo çdo pronë pranohet për menaxhim."
+        },
+        {
+          question: "Sa zgjat procesi deri te publikimi?",
+          answer:
+            "Pas vlerësimit fillestar, nëse prona përshtatet, organizojmë vizitën dhe propozimin. Afati i publikimit përcaktohet pas inspektimit dhe varet nga puna e nevojshme për ta bërë pronën gati."
+        }
+      ]
+    },
+    finalCta: {
+      h2: "Doni të dini nëse prona juaj përshtatet?",
+      body: "Na dërgoni vendndodhjen dhe 4–5 foto në WhatsApp. Do t'ju përgjigjemi pasi ta shqyrtojmë.",
+      cta: "MERRNI VLERËSIMIN FILLESTAR",
+      disclaimer: "Vlerësimi është fillestar dhe nuk përbën garanci të ardhurash."
+    },
+    footer: {
+      tagline: "Menaxhim profesional i qirave afatshkurtra.",
+      legalLinks: {
+        privacy: "Politika e privatësisë",
+        terms: "Kushtet",
+        english: "English"
+      }
     }
   }
   // TODO(Prompt 6): add an `en` key with the same shape once English copy is locked.
