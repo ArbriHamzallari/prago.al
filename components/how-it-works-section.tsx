@@ -1,3 +1,6 @@
+"use client";
+
+import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { Button } from "./ui/button";
@@ -5,8 +8,7 @@ import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
 
 export function ProcessSteps({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.process : SITE_COPY.sq.process;
+  const copy = locale === "en" ? SITE_COPY.en.process : SITE_COPY.sq.process;
   const whatsappUrl = getWhatsAppUrl();
 
   return (
@@ -39,7 +41,13 @@ export function ProcessSteps({ locale }: { locale: Locale }) {
       </div>
 
       <div className="mt-12 lg:mt-16">
-        <Button href={whatsappUrl} target="_blank" rel="noreferrer" variant="primary">
+        <Button
+          href={whatsappUrl}
+          target="_blank"
+          rel="noreferrer"
+          variant="primary"
+          onClick={() => track("cta_whatsapp_click", { position: "process", locale })}
+        >
           {copy.cta}
         </Button>
       </div>

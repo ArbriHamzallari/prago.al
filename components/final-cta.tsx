@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { Button } from "./ui/button";
@@ -7,9 +10,9 @@ import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
 
 export function FinalCta({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.finalCta : SITE_COPY.sq.finalCta;
+  const copy = locale === "en" ? SITE_COPY.en.finalCta : SITE_COPY.sq.finalCta;
   const whatsappUrl = getWhatsAppUrl();
+  const imageAlt = locale === "en" ? "Prago — ready to start the partnership" : "Prago — gati për të nisur bashkëpunimin";
 
   return (
     <Section id="final-cta" bg="cream" ariaLabelledby="final-cta-title">
@@ -20,7 +23,13 @@ export function FinalCta({ locale }: { locale: Locale }) {
           </SerifHeading>
           <BodyText className="mt-5 text-stone">{copy.body}</BodyText>
           <div className="mt-8">
-            <Button href={whatsappUrl} target="_blank" rel="noreferrer" variant="primary">
+            <Button
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              variant="primary"
+              onClick={() => track("cta_whatsapp_click", { position: "final", locale })}
+            >
               {copy.cta}
             </Button>
           </div>
@@ -31,7 +40,7 @@ export function FinalCta({ locale }: { locale: Locale }) {
         <div className="relative aspect-[4/3] overflow-hidden rounded-card lg:aspect-[4/5]">
           <Image
             src="/images/website/final-cta.webp"
-            alt="Prago — gati për të nisur bashkëpunimin"
+            alt={imageAlt}
             fill
             className="object-cover"
             sizes="(min-width: 1024px) 50vw, 100vw"

@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { Button } from "./ui/button";
@@ -6,14 +9,18 @@ import { EyebrowLabel } from "./ui/eyebrow-label";
 import { SerifHeading } from "./ui/serif-heading";
 import { BodyText } from "./ui/body-text";
 
+type HeroCopy = { eyebrow: string; h1: string; body: string; cta: string; helper: string };
+
 function HeroPanel({
   copy,
   whatsappUrl,
+  locale,
   className = "",
   ctaId
 }: {
-  copy: (typeof SITE_COPY)["sq"]["hero"];
+  copy: HeroCopy;
   whatsappUrl: string;
+  locale: Locale;
   className?: string;
   ctaId?: string;
 }) {
@@ -31,6 +38,7 @@ function HeroPanel({
         rel="noreferrer"
         variant="primary"
         className="mt-8 w-full lg:w-auto"
+        onClick={() => track("cta_whatsapp_click", { position: "hero", locale })}
       >
         {copy.cta}
       </Button>
@@ -40,28 +48,22 @@ function HeroPanel({
 }
 
 export function Hero({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.hero : SITE_COPY.sq.hero;
+  const copy = locale === "en" ? SITE_COPY.en.hero : SITE_COPY.sq.hero;
   const whatsappUrl = getWhatsAppUrl();
+  const imageAlt = locale === "en" ? "A property managed by Prago" : "Pronë e menaxhuar nga Prago";
 
   return (
     <section className="relative w-full overflow-hidden bg-cream">
       <div className="relative h-[280px] w-full lg:h-[740px]">
         {/* TODO: placeholder path — real photography pending, see rebuild-adaptation-plan.md */}
-        <Image
-          src="/images/website/hero-main.webp"
-          alt="Pronë e menaxhuar nga Prago"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
+        <Image src="/images/website/hero-main.webp" alt={imageAlt} fill priority className="object-cover" sizes="100vw" />
 
         <div className="absolute inset-0 hidden lg:flex lg:items-center">
           <div className="mx-auto w-full max-w-content px-[32px]">
             <HeroPanel
               copy={copy}
               whatsappUrl={whatsappUrl}
+              locale={locale}
               className="max-w-[560px] rounded-hero bg-cream p-[48px] shadow-card"
             />
           </div>
@@ -69,7 +71,7 @@ export function Hero({ locale }: { locale: Locale }) {
       </div>
 
       <div className="px-[20px] py-[36px] lg:hidden">
-        <HeroPanel copy={copy} whatsappUrl={whatsappUrl} ctaId="hero-cta-mobile" />
+        <HeroPanel copy={copy} whatsappUrl={whatsappUrl} locale={locale} ctaId="hero-cta-mobile" />
       </div>
     </section>
   );

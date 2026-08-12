@@ -342,6 +342,65 @@ past it, and hidden again at both FinalCta and the footer — confirmed programm
 footer-link overlap is possible since the button is already hidden by the time the footer
 enters view.
 
+## 10. Implemented in Prompt 6 (unified WhatsApp flow, analytics, English route)
+
+**WhatsApp URL — flagged and confirmed before wiring:** the prompt's premise (that the repo
+"currently points to" the old catalog link `wa.me/message/VMQY23EBVHNWM1`) was out of date —
+that link was already removed in Prompt 1, and every CTA has used a plain
+`wa.me/<digits>` link via `lib/whatsapp.ts` since Prompt 3. Flagged this to you before wiring
+anything further; you confirmed proceeding with the exact number and prefilled message given.
+`getWhatsAppUrl()` now returns `https://wa.me/355686669060?text=<encoded Albanian message>` —
+**the same message on both locales**, per the prompt's explicit "every CTA must open the
+identical prefilled message" instruction (not translated per-locale). Left a code comment
+flagging this as worth revisiting: an English-page visitor currently gets an Albanian-language
+WhatsApp prefill.
+
+**Verified via Playwright, not just grep:** every `wa.me` link across both locales, both
+viewport tiers (8 CTAs total per page — header ×2, hero ×2, process, pricing, final,
+floating) is byte-identical to the expected URL. `grep -rn "wa.me"` confirms exactly one
+constructor site (`lib/whatsapp.ts`).
+
+**Analytics:** added `lib/analytics.ts` — no real provider wired (per instruction, a stub with
+TODOs, not a new dependency), a discriminated-union `track()` so payload shapes are enforced
+at the type level, dev-only `console.debug` output (silent no-op in production). Fired
+`cta_whatsapp_click` from all 6 CTA positions, `faq_open` only on open (verified opening then
+closing the same item logs exactly one call), `language_switch` from the header's SQ/EN links.
+Spot-checked actual logged payloads in dev — confirmed no phone numbers, message text,
+addresses, or filenames in any payload. Left explicit `TODO(legal)` (consent-gating — flagging
+as a legal question for you, not deciding it) and `TODO(pixel)` (Meta Pixel Contact-not-Lead
+behavior) comments rather than implementing either.
+
+**RSC boundary fix required:** adding `onClick` handlers for `track()` broke the build —
+`hero.tsx`, `how-it-works-section.tsx`, `pricing.tsx`, and `final-cta.tsx` were Server
+Components, and Next.js can't serialize a function prop from a Server Component into `Button`
+(a Client Component once it has interactive behavior). Added `"use client"` to all four; this
+is expected and matches the pattern `site-header.tsx` and `floating-whatsapp.tsx` already used.
+
+**English route:** `lib/site-copy.ts` now has a full `SITE_COPY.en` tree mirroring `sq`
+(nav, hero, trustBand, serviceScope, process, propertyStory, ownerVisibility, pricing, faq,
+finalCta, footer) — sentence-for-sentence translations of the locked Albanian copy, no
+reintroduced AI-differentiator or earnings-claim language. Also translated every `alt` text
+that was hardcoded Albanian (hero background, property-story images, owner-report screenshot,
+final-cta photo) and localized the `/privacy`/`/terms` stub page headings — none of these were
+explicitly listed as copy to translate, but leaving them Albanian-only on `/en` would have
+violated the "no Albanian text on the English route" acceptance bar, so fixed them too.
+`SITE_FACTS.feeBasisSq` (rendered directly by Pricing, locale-independent before this prompt)
+now has a `feeBasisEn` sibling — a direct translation, not an independently drafted sentence;
+same signed-agreement verification caveat as the Albanian original applies here, not yet
+independently re-confirmed for the English wording specifically.
+
+**Not changed:** `SITE_FACTS.serviceAreaSq`, `legalName`, and `nipt` are still the Prompt 1
+bracketed placeholders and render identically on both locales — they're not real content yet,
+so there's nothing to translate until you supply actual values (same open item as Prompt 5).
+The header's `/en` link was already a normal working `Link` (never explicitly disabled in
+earlier prompts) — now that the English route is genuinely complete, no separate "enable" step
+was needed.
+
+**Verified:** `npm run build` + `npm run lint` clean; `/` → `<html lang="sq">` with zero
+English-marker text, `/en` → `<html lang="en">` with zero Albanian-marker text (checked via a
+word-list sweep of `document.body.innerText`, not just spot-reading); Pricing's English fee
+figure and rule render `SITE_FACTS.feeBasisEn` correctly.
+
 ## 5. Summary
 
 - Stack confirmed: Next.js 16 (App Router) / React 19 / Tailwind v4 (CSS-first, currently

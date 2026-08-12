@@ -6,8 +6,8 @@ import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
 
 export function OwnerVisibility({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.ownerVisibility : SITE_COPY.sq.ownerVisibility;
+  const copy = locale === "en" ? SITE_COPY.en.ownerVisibility : SITE_COPY.sq.ownerVisibility;
+  const imageAlt = locale === "en" ? "Example of the monthly owner report" : "Shembull i raportit mujor për pronarin";
 
   return (
     <Section id="reporting" bg="cream" ariaLabelledby="reporting-title">
@@ -33,7 +33,7 @@ export function OwnerVisibility({ locale }: { locale: Locale }) {
           <div className="relative aspect-[1800/1125] overflow-hidden rounded-card shadow-card">
             <Image
               src="/images/website/owner-report.webp"
-              alt="Shembull i raportit mujor për pronarin"
+              alt={imageAlt}
               fill
               className="object-cover"
               sizes="(min-width: 1024px) 58vw, 100vw"

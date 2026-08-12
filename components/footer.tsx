@@ -4,8 +4,7 @@ import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { SITE_FACTS } from "@/lib/site-facts";
 
 export function SiteFooter({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.footer : SITE_COPY.sq.footer;
+  const copy = locale === "en" ? SITE_COPY.en.footer : SITE_COPY.sq.footer;
   const year = new Date().getFullYear();
   const otherLocaleHref = locale === "en" ? "/" : "/en";
   const localePrefix = locale === "en" ? "/en" : "";
@@ -45,7 +44,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             {copy.legalLinks.terms}
           </Link>
           <Link href={otherLocaleHref} className="mt-2 block hover:text-cream">
-            {copy.legalLinks.english}
+            {copy.legalLinks.otherLanguage}
           </Link>
         </div>
       </div>

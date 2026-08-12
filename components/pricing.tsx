@@ -1,3 +1,6 @@
+"use client";
+
+import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { SITE_FACTS } from "@/lib/site-facts";
@@ -7,8 +10,8 @@ import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
 
 export function Pricing({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.pricing : SITE_COPY.sq.pricing;
+  const copy = locale === "en" ? SITE_COPY.en.pricing : SITE_COPY.sq.pricing;
+  const feeBasis = locale === "en" ? SITE_FACTS.feeBasisEn : SITE_FACTS.feeBasisSq;
   const whatsappUrl = getWhatsAppUrl();
   const feeLabel = `${SITE_FACTS.feePercent}%`;
 
@@ -26,13 +29,17 @@ export function Pricing({ locale }: { locale: Locale }) {
           <SerifHeading as="h2" size="h2" id="pricing-title" className="mt-4 text-cream">
             {feeLabel} {copy.titleSuffix}
           </SerifHeading>
-          <p className="mt-5 max-w-[640px] font-sans text-base leading-relaxed text-cream/90">
-            {SITE_FACTS.feeBasisSq}
-          </p>
+          <p className="mt-5 max-w-[640px] font-sans text-base leading-relaxed text-cream/90">{feeBasis}</p>
           <p className="mt-4 max-w-[640px] font-sans text-base leading-relaxed text-cream/80">{copy.includes}</p>
           <p className="mt-4 max-w-[640px] font-sans text-sm leading-relaxed text-cream/60">{copy.disclosure}</p>
           <div className="mt-8">
-            <Button href={whatsappUrl} target="_blank" rel="noreferrer" variant="cream">
+            <Button
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              variant="cream"
+              onClick={() => track("cta_whatsapp_click", { position: "pricing", locale })}
+            >
               {copy.cta}
             </Button>
           </div>

@@ -2,13 +2,13 @@
 
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import { track } from "@/lib/analytics";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
 
 export function Faq({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.faq : SITE_COPY.sq.faq;
+  const copy = locale === "en" ? SITE_COPY.en.faq : SITE_COPY.sq.faq;
 
   // Starts closed on every viewport for a consistent SSR-safe first paint, then opens the
   // first item on desktop only — mobile stays fully closed, per the spec.
@@ -18,6 +18,11 @@ export function Faq({ locale }: { locale: Locale }) {
     const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
     if (isDesktop) setOpenIndex(0);
   }, []);
+
+  const toggle = (index: number, isOpen: boolean) => {
+    setOpenIndex(isOpen ? null : index);
+    if (!isOpen) track("faq_open", { item: `faq-${index}`, locale });
+  };
 
   return (
     <Section id="faq" bg="cream" ariaLabelledby="faq-title">
@@ -35,7 +40,7 @@ export function Faq({ locale }: { locale: Locale }) {
                   id={`faq-button-${index}`}
                   aria-expanded={openIndex === index}
                   aria-controls={`faq-panel-${index}`}
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  onClick={() => toggle(index, isOpen)}
                   className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left font-sans text-sm font-medium text-charcoal sm:px-6 sm:py-5 sm:text-base"
                 >
                   {item.question}

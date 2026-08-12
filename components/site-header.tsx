@@ -4,6 +4,7 @@ import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { Button } from "./ui/button";
@@ -13,8 +14,7 @@ const FOCUS_RING =
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.nav : SITE_COPY.sq.nav;
+  const copy = locale === "en" ? SITE_COPY.en.nav : SITE_COPY.sq.nav;
   const whatsappUrl = getWhatsAppUrl();
 
   useEffect(() => {
@@ -25,6 +25,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   }, []);
 
   const homeHref = locale === "en" ? "/en" : "/";
+  const handleWhatsAppClick = () => track("cta_whatsapp_click", { position: "header", locale });
 
   return (
     <header
@@ -69,6 +70,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             ) : (
               <Link
                 href="/"
+                onClick={() => track("language_switch", { from: locale, to: "sq" })}
                 className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-stone hover:text-charcoal md:min-h-0 md:min-w-0 ${FOCUS_RING}`}
               >
                 SQ
@@ -82,6 +84,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             ) : (
               <Link
                 href="/en"
+                onClick={() => track("language_switch", { from: locale, to: "en" })}
                 className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-stone hover:text-charcoal md:min-h-0 md:min-w-0 ${FOCUS_RING}`}
               >
                 EN
@@ -97,6 +100,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
               variant="primary"
               size="compact"
               className="whitespace-nowrap"
+              onClick={handleWhatsAppClick}
             >
               {copy.cta}
             </Button>
@@ -107,6 +111,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             target="_blank"
             rel="noreferrer"
             aria-label={copy.cta}
+            onClick={handleWhatsAppClick}
             className={`flex h-11 w-11 items-center justify-center rounded-card bg-vishnje text-cream transition hover:bg-vishnje-soft md:hidden ${FOCUS_RING}`}
           >
             <MessageCircle className="h-5 w-5" strokeWidth={2} />

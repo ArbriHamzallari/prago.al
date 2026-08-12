@@ -4,8 +4,7 @@ import { SITE_COPY, type Locale } from "@/lib/site-copy";
 const ICONS = [Users, ClipboardList, Layers];
 
 export function TrustBand({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const items = locale === "en" ? SITE_COPY.sq.trustBand.items : SITE_COPY.sq.trustBand.items;
+  const items = locale === "en" ? SITE_COPY.en.trustBand.items : SITE_COPY.sq.trustBand.items;
 
   return (
     <section className="bg-vishnje-dark py-[28px] text-cream md:py-[36px]">

@@ -30,7 +30,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <FinalCta locale={locale} />
       </main>
       <SiteFooter locale={locale} />
-      <FloatingWhatsApp />
+      <FloatingWhatsApp locale={locale} />
     </>
   );
 }

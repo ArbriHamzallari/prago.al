@@ -7,8 +7,7 @@ import { SerifHeading } from "./ui/serif-heading";
 const ICONS = [Tag, CalendarCheck, Wrench];
 
 export function ServiceScope({ locale }: { locale: Locale }) {
-  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
-  const copy = locale === "en" ? SITE_COPY.sq.serviceScope : SITE_COPY.sq.serviceScope;
+  const copy = locale === "en" ? SITE_COPY.en.serviceScope : SITE_COPY.sq.serviceScope;
 
   return (
     <Section id="services" bg="cream" ariaLabelledby="services-title">

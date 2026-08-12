@@ -2,12 +2,15 @@
 
 import { MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import type { Locale } from "@/lib/site-copy";
 
-export function FloatingWhatsApp() {
+export function FloatingWhatsApp({ locale }: { locale: Locale }) {
   const [heroCtaVisible, setHeroCtaVisible] = useState(true);
   const [blocked, setBlocked] = useState(false);
   const whatsappUrl = getWhatsAppUrl();
+  const label = locale === "en" ? "WhatsApp · Assessment" : "WhatsApp · Vlerësimi";
 
   useEffect(() => {
     const heroCta = document.getElementById("hero-cta-mobile");
@@ -52,12 +55,13 @@ export function FloatingWhatsApp() {
       rel="noreferrer"
       aria-hidden={!visible}
       tabIndex={visible ? undefined : -1}
+      onClick={() => track("cta_whatsapp_click", { position: "floating_mobile", locale })}
       className={`fixed inset-x-4 bottom-[calc(12px+env(safe-area-inset-bottom))] z-40 flex min-h-[56px] items-center justify-center gap-2 rounded-card bg-vishnje text-cream shadow-card transition-opacity duration-200 md:hidden ${
         visible ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
       <MessageCircle className="h-5 w-5" strokeWidth={2} />
-      <span className="font-sans text-sm font-semibold uppercase tracking-wide">WhatsApp · Vlerësimi</span>
+      <span className="font-sans text-sm font-semibold uppercase tracking-wide">{label}</span>
     </a>
   );
 }
