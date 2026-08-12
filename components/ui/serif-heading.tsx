@@ -14,12 +14,18 @@ export function SerifHeading({
   children,
   size = "h2",
   as: Tag = "h2",
-  className = ""
+  className = "",
+  id
 }: {
   children: ReactNode;
   size?: keyof typeof SIZES;
   as?: "h1" | "h2" | "h3" | "p";
   className?: string;
+  id?: string;
 }) {
-  return <Tag className={`font-serif ${SIZES[size]} ${className}`}>{children}</Tag>;
+  return (
+    <Tag id={id} className={`font-serif ${SIZES[size]} ${className}`}>
+      {children}
+    </Tag>
+  );
 }

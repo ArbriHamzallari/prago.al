@@ -1,47 +1,47 @@
-"use client";
-
-import { motion } from "framer-motion";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { SITE_COPY, type Locale } from "@/lib/site-copy";
+import { Button } from "./ui/button";
 import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
 
-const STEPS = [
-  {
-    num: "01",
-    title: "Talk to us.",
-    body: "Free call or visit. We tell you exactly what your property can earn. No fluff."
-  },
-  {
-    num: "02",
-    title: "We set it up.",
-    body: "Photos, listing, pricing, smart lock, AI. All configured. Live in days, not months."
-  },
-  {
-    num: "03",
-    title: "You earn.",
-    body: "Bookings roll in. Payouts hit your account. You watch the numbers grow."
-  }
-];
+export function ProcessSteps({ locale }: { locale: Locale }) {
+  // TODO(Prompt 6): SITE_COPY.en not implemented yet — falls back to sq either way.
+  const copy = locale === "en" ? SITE_COPY.sq.process : SITE_COPY.sq.process;
+  const whatsappUrl = getWhatsAppUrl();
 
-export function HowItWorksSection() {
   return (
-    <Section id="how-it-works" bg="sand">
-      <SerifHeading size="h1" className="text-charcoal">
-        From keys to cash in three steps.
+    <Section id="process" bg="cream" ariaLabelledby="process-title">
+      <SerifHeading as="h2" size="h2" id="process-title" className="text-charcoal">
+        {copy.title}
       </SerifHeading>
-      <div className="mt-14 grid gap-10 md:grid-cols-3">
-        {STEPS.map((step, i) => (
-          <motion.div
-            key={step.num}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-          >
+
+      <div className="mt-14 hidden lg:grid lg:grid-cols-3 lg:gap-10">
+        {copy.steps.map((step) => (
+          <div key={step.num}>
             <p className="font-serif text-5xl font-medium text-vishnje/30">{step.num}</p>
             <h3 className="mt-4 font-serif text-2xl font-medium text-charcoal">{step.title}</h3>
             <p className="mt-3 font-sans leading-relaxed text-stone">{step.body}</p>
-          </motion.div>
+          </div>
         ))}
+      </div>
+
+      <div className="mt-14 flex flex-col lg:hidden">
+        {copy.steps.map((step, i, steps) => {
+          const isLast = i === steps.length - 1;
+          return (
+            <div key={step.num} className={`border-l-2 pl-6 ${isLast ? "border-transparent" : "border-sand pb-10"}`}>
+              <p className="font-serif text-3xl font-medium text-vishnje/40">{step.num}</p>
+              <h3 className="mt-3 font-serif text-xl font-medium text-charcoal">{step.title}</h3>
+              <p className="mt-2 font-sans text-base leading-relaxed text-stone">{step.body}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-12 lg:mt-16">
+        <Button href={whatsappUrl} target="_blank" rel="noreferrer" variant="primary">
+          {copy.cta}
+        </Button>
       </div>
     </Section>
   );

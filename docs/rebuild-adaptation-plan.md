@@ -180,6 +180,57 @@ logo cloud deletion). Added `maxWidth.content: 1200px` and `borderRadius.card/he
 `borderRadius["2xl"]` has only ever lived in the JS config and reached the CSS engine via the
 `@config` bridge).
 
+## 7. Implemented in Prompt 3 (header, hero, trust band, service scope, process steps)
+
+**Pending real photography (placeholder paths only, no image files created):**
+- `public/images/website/hero-main.webp` — Hero's full-bleed background. Referenced by path
+  only; the file doesn't exist yet, so it 404s in dev/prod until real photography is dropped
+  in. This doesn't break the build (Next only validates local `import`-ed images at build time,
+  not string paths into `public/`), only the visual.
+- ServiceScope's three cards use icon + text (Tag / CalendarCheck / Wrench from lucide-react),
+  not photos. Re-reading the instruction ("one real operational photo... ONLY if available...
+  otherwise icon + text, never stock imagery") — since zero real operational photos exist
+  today, icon + text is the correct current state, not a placeholder-path stand-in like the
+  hero. Swap individual cards to a real photo above the text once available per property/service
+  category; no code changes needed to the copy/data shape for that swap.
+
+**Copy/i18n structure:** `lib/site-copy.ts` now holds a `SITE_COPY.sq` tree (nav, hero,
+trustBand, serviceScope, process) with the locked Albanian copy verbatim. No `SITE_COPY.en` key
+yet — every component takes a `locale: Locale` prop and resolves copy via
+`locale === "en" ? SITE_COPY.sq... : SITE_COPY.sq...` (both branches currently identical,
+flagged with a `TODO(Prompt 6)` comment) so the prop is genuinely wired and ready for Prompt 6
+to add the `en` branch without touching component structure. `lib/whatsapp.ts` added
+`getWhatsAppUrl()` as a working (not fake) stub — it returns a bare `https://wa.me/<digits>`
+deep link with no prefilled message; Prompt 6 adds the prefilled `text` param.
+
+**Renamed:** `components/navbar.tsx` → `site-header.tsx` (exports `SiteHeader`),
+`components/stats-bar.tsx` → `trust-band.tsx` (exports `TrustBand`) — both offered as options in
+the prompt. `services-pricing-section.tsx` and `how-it-works-section.tsx` kept their filenames
+(rename wasn't offered for those two) but now export `ServiceScope` and `ProcessSteps`
+respectively — file name no longer matches the export name for those two; flagging in case
+that's worth reconciling in a later cleanup prompt.
+
+**Two real bugs found and fixed during Playwright verification, worth knowing about for future
+prompts using `Button`:** Tailwind's cascade order between an unprefixed utility class and a
+conditionally-applied class targeting the *same* CSS property (e.g. `inline-flex` baked into a
+shared component's base classes vs. a caller passing `hidden md:inline-flex` on top) is not
+guaranteed to resolve in the caller's favor — it depends on Tailwind's internal stylesheet
+generation order, not the order classes appear in the `className` string. This bit both the
+header's compact-CTA sizing (fixed by adding a real `size` variant to `Button` instead of
+overriding its padding/font-size via conflicting classes) and its responsive visibility (fixed
+by wrapping `Button` in a plain `<div className="hidden md:block">` instead of passing
+`hidden md:inline-flex` as `Button`'s own `className`, since `Button`'s base already hardcodes
+`inline-flex` unconditionally). Rule of thumb going forward: never fight a shared component's
+own base classes with a conflicting override on the same property — extend the component with a
+real prop, or wrap it.
+
+**Verified with Playwright** (not just `curl`) against a production build (`next build` +
+`next start`), since this prompt's acceptance criteria are visual/layout-based: nav doesn't wrap
+at 1366px or 768px, CTA never touches the viewport edge, all mobile tap targets measured at
+exactly 44×44px (logo link, SQ/EN links, compact WhatsApp button), focus-visible outline
+confirmed present across 9 sequential tab stops, hero CTA+helper text confirmed visible with no
+overlap on a 390×844 viewport, and `/sq`→`/` /`/en` `<html lang>` behavior re-confirmed intact.
+
 ## 5. Summary
 
 - Stack confirmed: Next.js 16 (App Router) / React 19 / Tailwind v4 (CSS-first, currently
