@@ -178,7 +178,7 @@ export const SITE_COPY = {
       eyebrow: "PROFESSIONAL SHORT-TERM RENTAL MANAGEMENT",
       h1: "You own the property. We manage every detail.",
       body: "From pricing and bookings to guest communication, cleaning and maintenance — with a local team and clear reporting.",
-      cta: "GET AN INITIAL ASSESSMENT",
+      cta: "GET AN INITIAL ASSESSMENT ON WHATSAPP",
       helper: "Send us the location and 4–5 photos on WhatsApp."
     },
     trustBand: {
@@ -248,7 +248,7 @@ export const SITE_COPY = {
           body: "If the property is a fit, we arrange a visit and prepare the management proposal."
         }
       ],
-      cta: "GET AN INITIAL ASSESSMENT"
+      cta: "GET AN INITIAL ASSESSMENT ON WHATSAPP"
     },
     propertyStory: {
       eyebrow: "Case in preparation",
@@ -271,7 +271,7 @@ export const SITE_COPY = {
       titleSuffix: "for full management.",
       includes: "Management of listing, pricing, calendar, guest communication, operations coordination, and owner reporting.",
       disclosure: "Maintenance, materials, and third-party service costs are itemized separately when they apply.",
-      cta: "GET AN INITIAL ASSESSMENT"
+      cta: "GET AN INITIAL ASSESSMENT ON WHATSAPP"
     },
     faq: {
       title: "Frequently asked questions",
@@ -311,7 +311,7 @@ export const SITE_COPY = {
     finalCta: {
       h2: "Would you like to know whether your property is a fit?",
       body: "Send us the location and 4–5 photos on WhatsApp. We'll get back to you once we've reviewed it.",
-      cta: "GET AN INITIAL ASSESSMENT",
+      cta: "GET AN INITIAL ASSESSMENT ON WHATSAPP",
       disclaimer: "The assessment is preliminary and does not constitute a guarantee of income."
     },
     footer: {
