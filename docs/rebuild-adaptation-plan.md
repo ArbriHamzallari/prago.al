@@ -520,6 +520,289 @@ area until real values are supplied. `feeBasisEn` still hasn't been independentl
 against the signed management agreement (Prompt 6's caveat, unchanged). Privacy/terms content
 is a draft pending Arbri/counsel review, not final legal text.
 
+## 12. Prompt 8 — pre-production sign-off report
+
+Every check below was actually executed against a fresh `npm run build` + `npm run start`
+(production mode) on 2026-08-13, not inferred from memory or from what earlier prompts already
+claimed. One real, previously-undetected bug was found and fixed along the way (see
+"Functional checks" → sticky header). **This is a report only — nothing was pushed or
+deployed.** The commit for the one fix below is still sitting locally, uncommitted, pending
+your review (see "Outstanding blockers" at the end).
+
+### Content search tests
+
+Run with `rg` against both the shipped source tree (`app/ components/ lib/ public/` — `docs/`
+and `cursor.md` excluded, since those are internal planning files that legitimately *quote* the
+banned phrases as a record of what was removed, and never ship to a browser) and the actual
+built HTML output (`.next/server/app/*.html`, the real static files Next.js serves).
+
+**Must be absent — all four returned zero matches in both source and built output:**
+
+```
+$ rg -n "We run your property better|You keep 80%|We can prove it|Live AI activity" app components lib public
+(no matches, exit 1)
+
+$ rg -n "Simon Holland|Anna Hilson|Alex Merhige|Amber James|76.6%" app components lib public
+(no matches, exit 1)
+
+$ rg -n "images.unsplash.com|pravatar.cc|from 20%|pamjen e sezonalitetit" app components lib public
+(no matches, exit 1)
+
+$ rg -ni "8A8079" app components lib public
+(no matches, exit 1)
+```
+
+Same four patterns re-run against `.next/server/app/*.html` (post-build, the literal bytes
+served to a browser): all four again returned zero matches.
+
+*For transparency:* the unscoped repo-wide version of these greps (including `docs/` and
+`cursor.md`) does return matches — `cursor.md` (the original build brief) quotes the banned
+hero copy verbatim as the thing that was removed, and `rebuild-adaptation-plan.md` quotes
+`8A8079`/`images.unsplash.com` in its own audit trail of what got fixed and when. Neither file
+is imported, rendered, or shipped by the app — confirmed by the same greps against
+`app/ components/ lib/ public/` and the built HTML coming back clean.
+
+**Must be present — both returned real matches in both source and built output:**
+
+```
+$ rg -n "Ju zotëroni pronën|4–5 foto|periudhat me më shumë kërkesë" app components lib public
+lib/site-copy.ts:17:      h1: "Ju zotëroni pronën. Ne menaxhojmë çdo detaj.",
+lib/site-copy.ts:20:      helper: "Na dërgoni vendndodhjen dhe 4–5 foto në WhatsApp."
+lib/site-copy.ts:78:          body: "Na dërgoni vendndodhjen dhe 4–5 foto në WhatsApp."
+lib/site-copy.ts:83:          body: "Vlerësojmë përshtatshmërinë, intervalin e çmimit për natë dhe periudhat me më shumë kërkesë."
+lib/site-copy.ts:153:      body: "Na dërgoni vendndodhjen dhe 4–5 foto në WhatsApp. ..."
+
+$ rg -n "aria-expanded|aria-controls|main-content" app components lib public
+app/[locale]/page.tsx:20:      <main id="main-content">
+app/[locale]/privacy/page.tsx:104:      <main id="main-content">
+app/[locale]/layout.tsx:90:          href="#main-content"
+components/faq-section.tsx:41:                  aria-expanded={openIndex === index}
+components/faq-section.tsx:42:                  aria-controls={`faq-panel-${index}`}
+app/[locale]/terms/page.tsx:107:      <main id="main-content">
+```
+
+Built-output match counts (per-file, confirming the same content survived into the static
+HTML): `sq.html` has 2 matches for the first pattern (Albanian copy, correctly absent from
+`en.html`); `main-content`/`aria-expanded`/`aria-controls` show up in all six rendered pages
+(`sq.html`, `en.html`, `sq/privacy.html`, `sq/terms.html`, `en/privacy.html`, `en/terms.html`).
+
+### Functional checks
+
+**Header anchors vs. sticky header overlap — found and fixed a real bug.** Testing this
+surfaced something none of the earlier per-prompt Playwright checks had actually caught: the
+header claims `position: sticky` but **was not actually sticking during a real scroll.**
+Root cause: `html`/`body` both had `overflow-x: hidden` in `globals.css` (added early in the
+rebuild to suppress horizontal scroll) — and per the CSS spec, giving *either* axis a non-
+`visible` overflow value turns that element into a scroll container, which breaks
+`position: sticky` for any descendant. Confirmed with a direct test: `header.getBoundingClientRect().bottom`
+after `scrollTo(0, 1000)` came back `-924` (i.e. scrolled away with the page) instead of `76`
+(pinned). Fixed by swapping `overflow-x: hidden` → `overflow-x: clip` on both `html` and
+`body` — `clip` suppresses horizontal overflow the same way but doesn't create a scroll
+container, so it doesn't interfere with sticky positioning. Re-tested with a real
+`page.mouse.wheel()` scroll (not just `scrollTo`) at both 1366×900 and 390×844: header now
+stays pinned at `top: 0` after scrolling 2000px, and `document.documentElement.scrollWidth`
+still exactly matches `window.innerWidth` at all four required viewports (no horizontal
+scrollbar reintroduced).
+
+Also bumped `scroll-padding-top` from 72px/60px to 88px/76px (the header is 76px on desktop,
+64px on mobile — the old values were actually 4px *short* of clearing it, before the sticky
+bug made that moot). Re-tested all 5 header anchors (`#services #process #reporting #pricing
+#faq`) at 1366×900 after the fix: every target heading lands 12–33px below the header's
+bottom edge, zero overlap.
+
+**This fix is not yet committed** — it's a real, verified bug fix, but this prompt was scoped
+as report-only and didn't include a commit instruction, so it's sitting in the working tree
+pending your go-ahead (see "Outstanding blockers").
+
+**Finding, not a bug — no mobile equivalent for header anchor links.** The desktop nav links
+(Shërbimet / Si funksionon / Raportimi / Tarifa / Pyetje) are `hidden md:flex` — completely
+absent from the DOM's visible/interactive surface below 768px, with no hamburger menu or other
+mobile substitute. This was never explicitly specified in any prompt's acceptance criteria (no
+prompt asked for a mobile nav menu), so it's not a regression — but it does mean "click every
+header anchor on mobile" isn't literally possible today, since those links don't exist on
+mobile. Flagging as a product decision, not silently adding a hamburger menu that wasn't asked
+for.
+
+**WhatsApp CTA consistency:** every *visible* `wa.me` link, checked at both 1366×900 and
+390×844, on both `/` and `/en` — 5 visible links per page/viewport combination (count differs
+from the "8 in the DOM" figure from Prompt 6's check because that count included both the
+desktop- and mobile-only duplicate CTAs that exist simultaneously in the DOM; only one of each
+pair is ever *visible* at a given viewport). All were byte-identical to
+`https://wa.me/355686669060?text=P%C3%ABrsh%C3%ABndetje!%20Dua%20nj%C3%AB%20vler%C3%ABsim%20fillestar%20p%C3%ABr%20pron%C3%ABn%20time.`
+across all four page/viewport combinations tested.
+
+**Keyboard-only navigation:** Tabbed through the entire homepage — 25 stops, zero unreachable
+elements, zero focus traps (confirmed by watching for a repeated element or an early fallback
+to `<body>`; focus reached the last footer link cleanly and 5×`Shift+Tab` correctly walked
+back toward the top). Order: skip link → logo → 5 nav links → EN toggle → header CTA → hero
+CTA → process CTA → 6 FAQ buttons → final CTA → footer's 6 links. No modal, dropdown, or other
+dismissible UI exists on this site, so Escape has nothing to test against — not applicable
+here, not skipped.
+
+**FAQ `aria-expanded` — verified via Playwright's `ariaSnapshot()` (the actual computed
+accessibility tree), not just the raw DOM attribute:**
+```
+Enter on a closed item  → - button "A mund ta përdor pronën kur dua?" [expanded]
+Space on that same item → - button "A mund ta përdor pronën kur dua?"        (collapsed again)
+Space again              → - button "A mund ta përdor pronën kur dua?" [expanded]
+```
+Cross-checked against the DOM at the final state: `aria-expanded="true"`,
+`aria-controls="faq-panel-2"`, the panel exists and its `hidden` attribute is correctly absent.
+Both Enter and Space toggle correctly; the accessibility tree's `[expanded]` marker tracks the
+DOM attribute exactly.
+
+**JavaScript disabled** (`javaScriptEnabled: false` context, not just DevTools throttling):
+`<h1>`, the hero body copy, the "20%" pricing figure, the FAQ question text, and the footer
+email are all present in `document.body.innerText` with zero JS. All 8 `wa.me` links (both
+desktop/mobile duplicates for every CTA position) are present in the DOM and identical — since
+`Button` renders a real `<a href>` via `next/link`, the links work with JS off; `onClick` is
+purely an analytics progressive-enhancement, not a requirement for the link to function.
+**One real gap:** the FAQ answer *text* is present in the raw HTML (each panel is
+server-rendered with the `hidden` attribute, not stripped), but with JS disabled there is no
+way to actually toggle a panel open — `hidden` never gets removed without the `onClick`
+handler. A no-JS visitor can read every question but can't reveal any answer. This is a common,
+accepted trade-off for a disclosure widget (virtually no real visitor browses with JS off, and
+Google's crawler executes JS), so I'm flagging it as a known minor gap, not blocking on it.
+
+**Slow 4G throttle (CDP `Network.emulateNetworkConditions`, 1.6 Mbps down / 150ms RTT) at
+390×844:** the initial HTML document (which already contains the server-rendered `<h1>` and
+hero copy) arrives at +169ms. Every other early request is a JS chunk, a font file, or the
+71×256px header logo — there is exactly **one** image request in the entire load, and it's the
+tiny priority-loaded logo. There are zero below-the-fold media requests to race against,
+because every case-study/hero/report image is currently a CSS placeholder with no network
+request at all (see Prompt 7). This test technically passes, but the honest framing is that it
+passes *because* there's no real photography yet, not because of deliberate lazy-loading
+engineering — worth re-testing once real images are wired in.
+
+**Open Graph / canonical / hreflang / structured data against a deployed preview — blocked,
+not run.** `git status` shows `origin/main` is **5 commits behind local `main`** — nothing
+since Prompt 1 (`e0aaa6d`) has ever been pushed to GitHub, there's no `.vercel` directory, no
+Vercel/Netlify config file, and no CI/CD workflow anywhere in the repo. There is no deployed
+preview URL of any kind to run a validator against. I verified the tags are *present and
+well-formed* locally (`rel="canonical"`, `hrefLang="sq-AL"`/`"en"`, the `og:*` meta tags, and
+the JSON-LD block all appear correctly in the built HTML — see Prompt 7's write-up), but
+"present in local HTML" and "validated against a live URL by an external tool" are different
+claims, and this prompt is explicit that only the latter counts. **This item cannot pass until
+the site is actually deployed somewhere** — that's a decision (hosting provider, domain
+cutover timing) outside this prompt's scope.
+
+### Required viewport screenshots
+
+Captured full-page screenshots at all four required sizes against the homepage
+(`/`, production build). All four: **zero horizontal overflow**
+(`document.documentElement.scrollWidth === window.innerWidth` exactly, confirmed
+programmatically, not just visually) and no overlapping/clipped content on inspection.
+
+| Viewport | Result |
+| --- | --- |
+| 390×844 | Clean. Single-column throughout, no overflow. |
+| 430×932 | Clean. Same layout as 390, no overflow. |
+| 768×1024 | Clean. Desktop nav (`md:flex`) is visible here; ProcessSteps and PropertyStory still render their stacked/mobile layout since those switch at `lg` (1024px) — intentional breakpoint choice from Prompt 3/4, not a bug. |
+| 1366×768 | Clean. Full desktop layout, 3-column ServiceScope grid, 2×2 PropertyStory image grid. Footer's placeholder brackets (`[INSERT CURRENT SERVICE AREA]`, `[INSERT EXACT REGISTERED NAME]`, `[INSERT NIPT]`) are plainly visible at this size — flagging since it's the clearest confirmation that these are still live on the page, not just present in code. |
+
+### Final sign-off checklist
+
+**Every published claim is true, current, and explainable.** With the current copy (locked
+across Prompts 1–7) and zero fabricated stats/names/dashboards left in the source (confirmed
+above), I have no specific claim I'd flag as unverifiable *in wording* — but two claims'
+*factual basis* depends entirely on documents I've never seen (below). Everything else
+(process steps, service scope, FAQ answers, disclaimers) describes Prago's actual operating
+model as given across the locked copy tables, not a marketing invention.
+
+**The fee sentence matches the signed management agreement — checking the actual history, not
+re-asserting it.** Reading back through this file: §8 (Prompt 4) explicitly did **not** commit
+Pricing until this was confirmed — "I have no access to that document... Please confirm the
+fee rule and disclosure text are accurate before this ships." That confirmation happened in
+conversation (you answered "Yes, matches exactly — commit as-is" before I made the Prompt 4
+commit), but — and this is a real gap I found while writing this report — **the confirmation
+was never actually written back into this file.** §8 and §9 both still read as if the question
+is open. I confirmed via `git log --all -p -- lib/site-facts.ts` that `feeBasisSq` has not
+changed at all since it was first introduced in the Prompt 1 commit (`dbcf49b`) — consistent
+with "matches exactly, commit as-is, no wording change needed" rather than a silent edit. So:
+yes, this was verified by you, not just copy-pasted from the manual — but I'm flagging the
+documentation gap so it doesn't look like an open question to whoever reads this file next.
+`feeBasisEn` (added in Prompt 6) is a direct translation of the already-confirmed `feeBasisSq`
+and has **not** been independently re-confirmed on its own English wording — that part is
+genuinely still open.
+
+**Property/operations images approved for publication:** none are live to approve. As of
+Prompt 7, `hero-main`, `final-cta`, `owner-report`, and all five `case-*` images were replaced
+with a non-photographic CSS placeholder (see `components/ui/photo-placeholder.tsx`) because the
+files never existed. `public/` currently contains exactly three image files: the two real logo
+JPEGs (already-approved brand assets) and the OG card I generated from the real logo + locked
+tagline (Prompt 7). **Zero property/operations photography is live on the site today** —
+nothing to approve, but also nothing pending review; it's all still pending *supply* from you.
+
+**No private guest/owner/booking/property data visible, including at full resolution on the
+owner-report screenshot:** not applicable — there is no owner-report screenshot on the site
+(placeholder only, see above). Nothing to check because nothing is there yet. This will need
+re-checking for real once you supply the redacted export.
+
+**`/en` contains none of the old removed Albanian-page claims:** re-checked directly (not
+relying on Prompt 6's earlier pass) — searched the live rendered `/en`, `/en/privacy`, and
+`/en/terms` pages' full body text *and* metadata (title + description) for every old
+AI-differentiator/earnings-claim phrase (`AI-powered`, `AI pricing`, `earn more`, `24/7 guest`,
+`smart pricing`, `spotless turnover`, `You keep 80`, `We handle everything else`, `managed
+end-to-end by AI`, plus the three hero/proof lines from the absent-group test). All three pages
+came back clean.
+
+**Legal pages identify the correct business entity — this cannot pass yet.**
+`SITE_FACTS.legalName` is still `"[INSERT EXACT REGISTERED NAME]"` and `nipt` is still
+`"[INSERT NIPT]"` — both literal bracket placeholders, confirmed by reading `lib/site-facts.ts`
+directly just now. `/privacy` and `/terms` both interpolate these into sentences like
+`"${SITE_FACTS.legalName} (NIPT ${SITE_FACTS.nipt}), operating as 'Prago'..."`, so both legal
+pages currently render the bracket text verbatim, on the live page, in a legal document. **This
+is a hard blocker** — per the prompt's own instruction, this checklist item cannot pass while
+these are placeholders, full stop.
+
+**Tested against a deployed preview, not only local dev:** no. Confirmed above — nothing has
+been pushed since Prompt 1, no deployment exists anywhere. Every check in this report ran
+against a local production build (`npm run build` + `npm run start`), which is the most
+rigorous thing available without a deployment, but it is not the same claim as "tested against
+a deployed preview."
+
+### Outstanding blockers before this can go to production
+
+Everything below is either waiting on you or requires an action (deploying) that this prompt
+explicitly said not to take:
+
+1. **`SITE_FACTS.legalName` and `nipt`** — still bracketed placeholders, rendering verbatim on
+   the live `/privacy` and `/terms` pages right now. Blocks the "legal pages identify the
+   correct entity" checklist item outright.
+2. **`SITE_FACTS.serviceAreaSq`** — still a bracketed placeholder, rendering on the footer and
+   inside the Organization JSON-LD.
+3. **Real photography** — hero background, the 5 Coastal Paradise case-study images, and the
+   final-CTA photo. All currently non-photographic placeholders; zero real property photos are
+   live anywhere on the site.
+4. **The owner-report screenshot** — needs the real, redacted monthly-report export from you.
+   Currently a placeholder; the "no private data visible" check can't be meaningfully run until
+   this exists.
+5. **The fee-sentence contract check** — `feeBasisSq` itself was confirmed against the signed
+   agreement (verbally, in conversation, before the Prompt 4 commit — see above), but that
+   confirmation was never written into this file until now, and `feeBasisEn`'s English wording
+   specifically has not been independently re-confirmed.
+6. **The WhatsApp catalog-link-vs-plain-number decision** — resolved in Prompt 6 (you confirmed
+   the plain numbered link with the prefilled Albanian message); no longer open, listed here
+   only because the prompt asked for it explicitly.
+7. **No deployment exists.** `origin/main` is 5 commits behind local `main`. The OG/canonical/
+   hreflang/structured-data validator check cannot run, and "tested against a deployed preview"
+   cannot pass, until this repo is pushed and deployed somewhere.
+8. **One uncommitted fix from this session:** `app/globals.css` — `overflow-x: hidden` →
+   `overflow-x: clip` on `html`/`body` (fixes the sticky header not actually sticking during
+   scroll) and `scroll-padding-top` 72/60px → 88/76px (clears the header's real height with a
+   margin instead of falling 4px short). Verified working; not committed since this prompt
+   didn't include a commit instruction — needs your go-ahead.
+9. **Privacy/terms content is a draft** pending your or counsel's review — not final legal
+   text, even setting aside the entity-name placeholders above.
+10. **No mobile equivalent for the header's in-page nav links** — not a regression against any
+    prompt's spec, but worth a product decision: ship as-is (WhatsApp CTA + scroll is the only
+    mobile navigation), or add a mobile menu.
+
+**Not a blocker, already clean:** every content search test (absent and present groups),
+WhatsApp CTA consistency, keyboard navigation, FAQ accessibility tree behavior, essential
+content with JS disabled, Slow-4G load order, all four required viewports, and the sticky-
+header bug (now fixed, pending commit).
+
 ## 5. Summary
 
 - Stack confirmed: Next.js 16 (App Router) / React 19 / Tailwind v4 (CSS-first, currently

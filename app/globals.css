@@ -28,20 +28,23 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 72px;
-  overflow-x: hidden;
+  /* Header is 76px (desktop) / 64px (mobile) — padding clears it with a ~12px buffer. */
+  scroll-padding-top: 88px;
+  /* "clip" (not "hidden") — "hidden" makes html/body a scroll container, which breaks
+     position: sticky on any descendant (the header stopped sticking during scroll). */
+  overflow-x: clip;
 }
 
 body {
   background: var(--cream);
   color: var(--charcoal);
   font-family: var(--font-inter), system-ui, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (max-width: 1023px) {
   html {
-    scroll-padding-top: 60px;
+    scroll-padding-top: 76px;
   }
 }
 
