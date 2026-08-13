@@ -8,6 +8,15 @@ const VARIANTS = {
   charcoal: "bg-charcoal text-cream hover:bg-charcoal/90"
 };
 
+// "cream" is the only variant used on a burgundy section background (Pricing) — its ring
+// needs to stay visible against that background, so it gets the cream ring instead of vishnje.
+const FOCUS_RING: Record<keyof typeof VARIANTS, string> = {
+  primary: "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-vishnje",
+  ghost: "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-vishnje",
+  charcoal: "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-vishnje",
+  cream: "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-cream"
+};
+
 // "default" meets the Prompt 2 primary-CTA spec (52px min height, 24px horizontal padding).
 // "compact" is for tight contexts like the sticky header, kept as a real size — not a class override.
 const SIZES = {
@@ -40,10 +49,9 @@ export function Button({
   id?: string;
   "aria-label"?: string;
 }) {
-  const base =
-    "inline-flex items-center justify-center rounded-card font-sans font-medium uppercase tracking-wide transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vishnje";
+  const base = "inline-flex items-center justify-center rounded-card font-sans font-medium uppercase tracking-wide transition hover:-translate-y-0.5";
 
-  const classes = `${base} ${SIZES[size]} ${VARIANTS[variant]} ${className}`;
+  const classes = `${base} ${SIZES[size]} ${VARIANTS[variant]} ${FOCUS_RING[variant]} ${className}`;
 
   if (href) {
     return (

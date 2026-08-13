@@ -3,6 +3,10 @@ import Link from "next/link";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { SITE_FACTS } from "@/lib/site-facts";
 
+const FOCUS_RING =
+  "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-cream";
+const LINK = `-mx-2 flex min-h-[44px] w-fit items-center px-2 hover:text-cream ${FOCUS_RING}`;
+
 export function SiteFooter({ locale }: { locale: Locale }) {
   const copy = locale === "en" ? SITE_COPY.en.footer : SITE_COPY.sq.footer;
   const year = new Date().getFullYear();
@@ -18,18 +22,13 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         </div>
 
         <div className="font-sans text-sm text-cream/80">
-          <a href={`tel:+${SITE_FACTS.whatsappDigits}`} className="block hover:text-cream">
+          <a href={`tel:+${SITE_FACTS.whatsappDigits}`} className={LINK}>
             {SITE_FACTS.whatsappDisplay}
           </a>
-          <a href={`mailto:${SITE_FACTS.email}`} className="mt-2 block hover:text-cream">
+          <a href={`mailto:${SITE_FACTS.email}`} className={LINK}>
             {SITE_FACTS.email}
           </a>
-          <a
-            href={SITE_FACTS.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 block hover:text-cream"
-          >
+          <a href={SITE_FACTS.instagram} target="_blank" rel="noopener noreferrer" className={LINK}>
             Instagram
           </a>
         </div>
@@ -37,13 +36,13 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         <div className="font-sans text-sm text-cream/80">{SITE_FACTS.serviceAreaSq}</div>
 
         <div className="font-sans text-sm text-cream/80">
-          <Link href={`${localePrefix}/privacy`} className="block hover:text-cream">
+          <Link href={`${localePrefix}/privacy`} className={LINK}>
             {copy.legalLinks.privacy}
           </Link>
-          <Link href={`${localePrefix}/terms`} className="mt-2 block hover:text-cream">
+          <Link href={`${localePrefix}/terms`} className={LINK}>
             {copy.legalLinks.terms}
           </Link>
-          <Link href={otherLocaleHref} className="mt-2 block hover:text-cream">
+          <Link href={otherLocaleHref} className={LINK}>
             {copy.legalLinks.otherLanguage}
           </Link>
         </div>

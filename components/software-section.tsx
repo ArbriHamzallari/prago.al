@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { BodyText } from "./ui/body-text";
 import { EyebrowLabel } from "./ui/eyebrow-label";
 import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
+import { PhotoPlaceholder } from "./ui/photo-placeholder";
 
 export function OwnerVisibility({ locale }: { locale: Locale }) {
   const copy = locale === "en" ? SITE_COPY.en.ownerVisibility : SITE_COPY.sq.ownerVisibility;
@@ -29,15 +29,9 @@ export function OwnerVisibility({ locale }: { locale: Locale }) {
         </div>
 
         <div className="lg:order-1 lg:col-span-7">
-          {/* TODO: placeholder path — real redacted owner-report export pending, see rebuild-adaptation-plan.md */}
+          {/* TODO: real redacted owner-report export pending — swap back to next/image, see rebuild-adaptation-plan.md */}
           <div className="relative aspect-[1800/1125] overflow-hidden rounded-card shadow-card">
-            <Image
-              src="/images/website/owner-report.webp"
-              alt={imageAlt}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 58vw, 100vw"
-            />
+            <PhotoPlaceholder label={imageAlt} className="absolute inset-0" />
           </div>
           <p className="mt-3 font-sans text-sm italic text-stone">{copy.caption}</p>
         </div>

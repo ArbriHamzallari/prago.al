@@ -20,6 +20,9 @@ export const SITE_COPY = {
       helper: "Na dërgoni vendndodhjen dhe 4–5 foto në WhatsApp."
     },
     trustBand: {
+      // Visually hidden — this section has no visible title by design, but every section
+      // needs a real heading relationship for screen-reader users (see rebuild-adaptation-plan.md).
+      srHeading: "Pse Prago",
       items: [
         {
           title: "Ekip lokal në terren",
@@ -179,6 +182,7 @@ export const SITE_COPY = {
       helper: "Send us the location and 4–5 photos on WhatsApp."
     },
     trustBand: {
+      srHeading: "Why Prago",
       items: [
         {
           title: "Local team on the ground",

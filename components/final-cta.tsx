@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
@@ -8,6 +7,7 @@ import { Button } from "./ui/button";
 import { BodyText } from "./ui/body-text";
 import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
+import { PhotoPlaceholder } from "./ui/photo-placeholder";
 
 export function FinalCta({ locale }: { locale: Locale }) {
   const copy = locale === "en" ? SITE_COPY.en.finalCta : SITE_COPY.sq.finalCta;
@@ -36,15 +36,9 @@ export function FinalCta({ locale }: { locale: Locale }) {
           <p className="mt-4 font-sans text-sm leading-relaxed text-stone">{copy.disclaimer}</p>
         </div>
 
-        {/* TODO: placeholder path — real photo pending, see rebuild-adaptation-plan.md */}
+        {/* TODO: real photo pending — swap back to next/image, see rebuild-adaptation-plan.md */}
         <div className="relative aspect-[4/3] overflow-hidden rounded-card lg:aspect-[4/5]">
-          <Image
-            src="/images/website/final-cta.webp"
-            alt={imageAlt}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-          />
+          <PhotoPlaceholder label={imageAlt} className="absolute inset-0" />
         </div>
       </div>
     </Section>

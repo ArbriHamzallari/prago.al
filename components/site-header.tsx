@@ -10,7 +10,7 @@ import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { Button } from "./ui/button";
 
 const FOCUS_RING =
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vishnje";
+  "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-vishnje";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
@@ -33,7 +33,10 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         scrolled ? "border-b border-sand" : "border-b border-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-full max-w-content items-center justify-between gap-2 px-[20px] md:px-[24px] lg:px-[32px]">
+      <nav
+        aria-label={locale === "en" ? "Main navigation" : "Lundrimi kryesor"}
+        className="mx-auto flex h-full max-w-content items-center justify-between gap-2 px-[20px] md:px-[24px] lg:px-[32px]"
+      >
         <Link
           href={homeHref}
           aria-label="Prago"

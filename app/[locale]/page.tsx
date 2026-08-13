@@ -17,7 +17,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
 
   return (
     <>
-      <main>
+      <main id="main-content">
         <SiteHeader locale={locale} />
         <Hero locale={locale} />
         <TrustBand locale={locale} />

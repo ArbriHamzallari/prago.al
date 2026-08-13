@@ -41,7 +41,7 @@ export function Faq({ locale }: { locale: Locale }) {
                   aria-expanded={openIndex === index}
                   aria-controls={`faq-panel-${index}`}
                   onClick={() => toggle(index, isOpen)}
-                  className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left font-sans text-sm font-medium text-charcoal sm:px-6 sm:py-5 sm:text-base"
+                  className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left font-sans text-sm font-medium text-charcoal focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[-3px] focus-visible:outline-vishnje sm:px-6 sm:py-5 sm:text-base"
                 >
                   {item.question}
                   <ChevronDown className={`h-5 w-5 shrink-0 text-stone transition ${isOpen ? "rotate-180" : ""}`} />

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
@@ -8,6 +7,7 @@ import { Button } from "./ui/button";
 import { EyebrowLabel } from "./ui/eyebrow-label";
 import { SerifHeading } from "./ui/serif-heading";
 import { BodyText } from "./ui/body-text";
+import { PhotoPlaceholder } from "./ui/photo-placeholder";
 
 type HeroCopy = { eyebrow: string; h1: string; body: string; cta: string; helper: string };
 
@@ -55,8 +55,8 @@ export function Hero({ locale }: { locale: Locale }) {
   return (
     <section className="relative w-full overflow-hidden bg-cream">
       <div className="relative h-[280px] w-full lg:h-[740px]">
-        {/* TODO: placeholder path — real photography pending, see rebuild-adaptation-plan.md */}
-        <Image src="/images/website/hero-main.webp" alt={imageAlt} fill priority className="object-cover" sizes="100vw" />
+        {/* TODO: real photography pending — swap back to next/image, see rebuild-adaptation-plan.md */}
+        <PhotoPlaceholder label={imageAlt} className="absolute inset-0" />
 
         <div className="absolute inset-0 hidden lg:flex lg:items-center">
           <div className="mx-auto w-full max-w-content px-[32px]">
