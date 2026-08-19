@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
@@ -7,12 +8,14 @@ import { Button } from "./ui/button";
 import { BodyText } from "./ui/body-text";
 import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
-import { PhotoPlaceholder } from "./ui/photo-placeholder";
+
+// Locked alt text — given as a single Albanian string with no English variant, so it's used
+// unchanged on both locales rather than inventing a translation (see rebuild-adaptation-plan.md).
+const IMAGE_ALT = "Ballkon i pronës me pamje nga qyteti dhe pishina";
 
 export function FinalCta({ locale }: { locale: Locale }) {
   const copy = locale === "en" ? SITE_COPY.en.finalCta : SITE_COPY.sq.finalCta;
   const whatsappUrl = getWhatsAppUrl();
-  const imageAlt = locale === "en" ? "Prago — ready to start the partnership" : "Prago — gati për të nisur bashkëpunimin";
 
   return (
     <Section id="final-cta" bg="cream" ariaLabelledby="final-cta-title">
@@ -36,9 +39,14 @@ export function FinalCta({ locale }: { locale: Locale }) {
           <p className="mt-4 font-sans text-sm leading-relaxed text-stone">{copy.disclaimer}</p>
         </div>
 
-        {/* TODO: real photo pending — swap back to next/image, see rebuild-adaptation-plan.md */}
         <div className="relative aspect-[4/3] overflow-hidden rounded-card lg:aspect-[4/5]">
-          <PhotoPlaceholder label={imageAlt} className="absolute inset-0" />
+          <Image
+            src="/images/website/final-cta.webp"
+            alt={IMAGE_ALT}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+          />
         </div>
       </div>
     </Section>

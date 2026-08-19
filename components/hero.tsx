@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
@@ -7,7 +8,6 @@ import { Button } from "./ui/button";
 import { EyebrowLabel } from "./ui/eyebrow-label";
 import { SerifHeading } from "./ui/serif-heading";
 import { BodyText } from "./ui/body-text";
-import { PhotoPlaceholder } from "./ui/photo-placeholder";
 
 type HeroCopy = { eyebrow: string; h1: string; body: string; cta: string; helper: string };
 
@@ -47,16 +47,25 @@ function HeroPanel({
   );
 }
 
+// Locked alt text — given as a single Albanian string with no English variant, so it's used
+// unchanged on both locales rather than inventing a translation (see rebuild-adaptation-plan.md).
+const HERO_IMAGE_ALT = "Ambient i ndriçuar i një prone të menaxhuar nga Prago";
+
 export function Hero({ locale }: { locale: Locale }) {
   const copy = locale === "en" ? SITE_COPY.en.hero : SITE_COPY.sq.hero;
   const whatsappUrl = getWhatsAppUrl();
-  const imageAlt = locale === "en" ? "A property managed by Prago" : "Pronë e menaxhuar nga Prago";
 
   return (
     <section className="relative w-full overflow-hidden bg-cream">
       <div className="relative h-[280px] w-full lg:h-[740px]">
-        {/* TODO: real photography pending — swap back to next/image, see rebuild-adaptation-plan.md */}
-        <PhotoPlaceholder label={imageAlt} className="absolute inset-0" />
+        <Image
+          src="/images/website/hero-main.webp"
+          alt={HERO_IMAGE_ALT}
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
 
         <div className="absolute inset-0 hidden lg:flex lg:items-center">
           <div className="mx-auto w-full max-w-content px-[32px]">

@@ -1,13 +1,16 @@
+import Image from "next/image";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { BodyText } from "./ui/body-text";
 import { EyebrowLabel } from "./ui/eyebrow-label";
 import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
-import { PhotoPlaceholder } from "./ui/photo-placeholder";
+
+// Locked alt text — given as a single Albanian string with no English variant, so it's used
+// unchanged on both locales rather than inventing a translation (see rebuild-adaptation-plan.md).
+const IMAGE_ALT = "Pamje e raportit mujor për pronarin, me të dhëna të anonimizuara";
 
 export function OwnerVisibility({ locale }: { locale: Locale }) {
   const copy = locale === "en" ? SITE_COPY.en.ownerVisibility : SITE_COPY.sq.ownerVisibility;
-  const imageAlt = locale === "en" ? "Example of the monthly owner report" : "Shembull i raportit mujor për pronarin";
 
   return (
     <Section id="reporting" bg="cream" ariaLabelledby="reporting-title">
@@ -29,9 +32,14 @@ export function OwnerVisibility({ locale }: { locale: Locale }) {
         </div>
 
         <div className="lg:order-1 lg:col-span-7">
-          {/* TODO: real redacted owner-report export pending — swap back to next/image, see rebuild-adaptation-plan.md */}
           <div className="relative aspect-[1800/1125] overflow-hidden rounded-card shadow-card">
-            <PhotoPlaceholder label={imageAlt} className="absolute inset-0" />
+            <Image
+              src="/images/website/owner-report.webp"
+              alt={IMAGE_ALT}
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 58vw, 100vw"
+            />
           </div>
           <p className="mt-3 font-sans text-sm italic text-stone">{copy.caption}</p>
         </div>
