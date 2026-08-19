@@ -1,3 +1,4 @@
+import { BehindEveryStay } from "@/components/behind-every-stay";
 import { Faq } from "@/components/faq-section";
 import { FinalCta } from "@/components/final-cta";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
@@ -5,7 +6,6 @@ import { SiteFooter } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { ProcessSteps } from "@/components/how-it-works-section";
 import { Pricing } from "@/components/pricing";
-import { PropertyStory } from "@/components/property-story";
 import { ServiceScope } from "@/components/services-pricing-section";
 import { SiteHeader } from "@/components/site-header";
 import { OwnerVisibility } from "@/components/software-section";
@@ -23,7 +23,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <TrustBand locale={locale} />
         <ServiceScope locale={locale} />
         <ProcessSteps locale={locale} />
-        <PropertyStory locale={locale} />
+        <BehindEveryStay locale={locale} />
         <OwnerVisibility locale={locale} />
         <Pricing locale={locale} />
         <Faq locale={locale} />

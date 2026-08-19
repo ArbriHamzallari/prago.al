@@ -803,6 +803,54 @@ WhatsApp CTA consistency, keyboard navigation, FAQ accessibility tree behavior, 
 content with JS disabled, Slow-4G load order, all four required viewports, and the sticky-
 header bug (now fixed, pending commit).
 
+## 13. Prompt 4 correction — Coastal Paradise replaced by BehindEveryStay
+
+After Prompt 8's sign-off, a full copy of the numbered-prompt manual was shared for the first
+time (previously only individual prompts had been sent one at a time). Diffing it against
+what's actually live surfaced exactly one real discrepancy: **§8 above documents `PropertyStory`,
+a Coastal Paradise case-study section — but this version of the manual's Prompt 4 says that
+concept was replaced entirely, "per a direct client decision," by a generic operational-trust
+section called `BehindEveryStay`, with an explicit instruction not to reference Coastal
+Paradise or any single named property.** OwnerVisibility and Pricing, the other two components
+in that same prompt, were re-checked against this document line-for-line and match exactly
+what's already live — no changes needed there.
+
+**What changed:**
+- `components/property-story.tsx` deleted. `components/behind-every-stay.tsx` added — reuses
+  `ServiceScope`'s icon-card pattern (24px lucide icon in `text-vishnje`, white card on the
+  cream section background) for the five items, since the manual specifies the same visual
+  language (icon + uppercase label + one-line description) without prescribing exact markup.
+  A plain `sm:grid-cols-2 lg:grid-cols-3` grid naturally produces the "3+2" layout the manual
+  calls out as acceptable for five items, with no manual row-splitting needed.
+- `SITE_COPY.{sq,en}.propertyStory` replaced by `SITE_COPY.{sq,en}.behindEveryStay`, copy
+  locked exactly as given in this prompt (Albanian) and in this document's Prompt 6 section
+  (English — that's where `BehindEveryStay`'s English copy was actually specified, since the
+  original Prompt 4 sent in this conversation predates this correction and never included it).
+  Both were transcribed verbatim, not paraphrased.
+- `app/[locale]/page.tsx`: `<PropertyStory />` → `<BehindEveryStay />`, same position between
+  `ProcessSteps` and `OwnerVisibility`.
+- **Net effect on pending image placeholders:** `BehindEveryStay` needs zero photography — the
+  manual is explicit about this ("do not add placeholder image paths here"). Deleting
+  PropertyStory removes 5 pending placeholder images (the case-study hero shot + the 4-image
+  "work in progress" grid) that no longer exist anywhere in the codebase. Remaining pending
+  photography is now down to 3: `hero-main.webp`, `final-cta.webp`, and `owner-report.webp`.
+
+**Verified:** `npm run build` + `npm run lint` clean. Zero remaining references anywhere in
+`app/ components/ lib/` to `PropertyStory`, `property-story`, `Coastal Paradise`, `Rast në
+përgatitje`, or any `case-0*` image path. Re-ran this prompt's required greps against the
+fresh build: zero `unsplash`/`pravatar` matches, zero `"from 20%"` matches in built output,
+every remaining `"20%"` occurrence traces to the same `feeBasisSq`/`feeBasisEn`/`feePercent`
+fee (the two mentions on `/terms` reference "as described on the main page," not a competing
+number), zero fake tab labels or named demo guests (the two `"overview"` matches from a naive
+grep are just the ordinary English word inside prose copy, not a UI element — same false-
+positive pattern already noted for `calendar` back in the original Prompt 4). Screenshotted
+`BehindEveryStay` on `/` (mobile 390×844, desktop 1366×900) and `/en` (desktop) — clean layout,
+no overlap, correct 3+2 desktop grid / single-column mobile stack, locked copy renders exactly
+as given on both locales.
+
+Pricing's fee-sentence sign-off from the original Prompt 4 stands unchanged (see §12's sign-off
+report) — this correction touched none of `lib/site-facts.ts` or `components/pricing.tsx`.
+
 ## 5. Summary
 
 - Stack confirmed: Next.js 16 (App Router) / React 19 / Tailwind v4 (CSS-first, currently

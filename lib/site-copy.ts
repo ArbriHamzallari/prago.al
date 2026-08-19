@@ -90,12 +90,17 @@ export const SITE_COPY = {
       ],
       cta: "MERRNI VLERËSIMIN FILLESTAR"
     },
-    propertyStory: {
-      eyebrow: "Rast në përgatitje",
-      h2: "Coastal Paradise: nga prona te një eksperiencë e gatshme për vizitorë.",
-      body: "Prago po dokumenton çdo hap të përgatitjes së kësaj prone — nga paraqitja dhe fotografitë, te organizimi i operacioneve dhe standardi i pritjes.",
-      disclosure: "Rezultatet do të publikohen vetëm pasi të ketë të dhëna të verifikueshme.",
-      gridLabel: "Punë në proces"
+    behindEveryStay: {
+      eyebrow: "PAS ÇDO QËNDRIMI",
+      h2: "Vizitorët tuaj shohin një qëndrim të qetë. Ne menaxhojmë gjithçka pas tij.",
+      body: "Nga kontakti i parë deri te kontrolli pas largimit të vizitorit, Prago koordinon komunikimin me vizitorët, hyrjen, pastrimin, mirëmbajtjen dhe raportimin për pronarin. Ju qëndroni gjithmonë të informuar, pa pasur nevojë të menaxhoni pronën nga telefoni.",
+      items: [
+        { label: "GATI PARA MBËRRITJES", description: "Pastrimi, furnizimet dhe kontrolli final i pronës." },
+        { label: "KOMUNIKIM ME VIZITORËT", description: "Pyetjet dhe kërkesat trajtohen gjatë gjithë qëndrimit." },
+        { label: "KOORDINIMI I MBËRRITJES", description: "Udhëzime të qarta për mbërritjen dhe mbështetje për hyrjen." },
+        { label: "ZGJIDHJE PROBLEMESH NË VEND", description: "Mirëmbajtja dhe çështjet e papritura koordinohen në terren." },
+        { label: "RAPORTIM I QARTË PËR PRONARIN", description: "Rezervimet, të ardhurat, kostot dhe përditësimet operative, në një vend." }
+      ]
     },
     ownerVisibility: {
       eyebrow: "TRANSPARENCË PËR PRONARIN",
@@ -250,12 +255,17 @@ export const SITE_COPY = {
       ],
       cta: "GET AN INITIAL ASSESSMENT ON WHATSAPP"
     },
-    propertyStory: {
-      eyebrow: "Case in preparation",
-      h2: "Coastal Paradise: from property to a guest-ready experience.",
-      body: "Prago is documenting every step of preparing this property — from presentation and photography to operations setup and the hospitality standard.",
-      disclosure: "Results will be published only once there is verifiable data.",
-      gridLabel: "Work in progress"
+    behindEveryStay: {
+      eyebrow: "BEHIND EVERY STAY",
+      h2: "Your guests see a smooth stay. We manage everything behind it.",
+      body: "From the first inquiry to the post-checkout inspection, Prago coordinates guest communication, access, cleaning, maintenance and owner reporting. You remain informed without managing the property from your phone.",
+      items: [
+        { label: "READY BEFORE ARRIVAL", description: "Cleaning, supplies and a final property check." },
+        { label: "GUEST COMMUNICATION", description: "Questions and requests handled throughout the stay." },
+        { label: "CHECK-IN COORDINATION", description: "Clear arrival instructions and access support." },
+        { label: "LOCAL PROBLEM-SOLVING", description: "Maintenance and unexpected issues coordinated on the ground." },
+        { label: "CLEAR OWNER REPORTING", description: "Bookings, income, costs and operational updates in one place." }
+      ]
     },
     ownerVisibility: {
       eyebrow: "TRANSPARENCY FOR OWNERS",
