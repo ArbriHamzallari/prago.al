@@ -15,7 +15,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
 
   return (
     <footer id="site-footer" className="bg-vishnje-dark px-[20px] py-[64px] text-cream md:px-[24px] lg:px-[32px]">
-      <div className="mx-auto grid max-w-content gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div className="mx-auto grid max-w-content gap-10 sm:grid-cols-3 lg:gap-8">
         <div>
           <Image src="/logo/prago-logo-white.jpeg" alt="Prago" width={120} height={36} className="h-9 w-auto" />
           <p className="mt-4 font-serif text-lg">{copy.tagline}</p>
@@ -33,8 +33,6 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </a>
         </div>
 
-        <div className="font-sans text-sm text-cream/80">{SITE_FACTS.serviceAreaSq}</div>
-
         <div className="font-sans text-sm text-cream/80">
           <Link href={`${localePrefix}/privacy`} className={LINK}>
             {copy.legalLinks.privacy}
@@ -49,7 +47,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       </div>
 
       <div className="mx-auto mt-10 max-w-content border-t border-cream/20 pt-6 font-sans text-xs text-cream/60">
-        {SITE_FACTS.legalName} · NIPT {SITE_FACTS.nipt} · © {year} Prago
+        © {year} Prago
       </div>
     </footer>
   );

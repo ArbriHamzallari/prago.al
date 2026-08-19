@@ -851,6 +851,154 @@ as given on both locales.
 Pricing's fee-sentence sign-off from the original Prompt 4 stands unchanged (see §12's sign-off
 report) — this correction touched none of `lib/site-facts.ts` or `components/pricing.tsx`.
 
+## 14. Prompt 8 re-run — §12 was stale, re-verified against current state (2026-08-19)
+
+§12's sign-off ran *before* the Prompt 4 correction (§13, Coastal Paradise → BehindEveryStay)
+and before the real photography was wired in (§15, once written). Its checklist said things
+like "zero property/operations photography is live on the site today" — true when written,
+false now. This section re-runs the full launch gate against the current build rather than
+patching §12 in place, so the history of what changed stays legible.
+
+**Content search tests — re-run against a fresh `npm run build` + the shipped source tree
+(`app/ components/ lib/ public/`, `docs/`+`cursor.md` excluded as before):**
+
+```
+Absent group — all four still zero matches, source and built output:
+  "We run your property better|You keep 80%|We can prove it|Live AI activity"  → 0
+  "Simon Holland|Anna Hilson|Alex Merhige|Amber James|76.6%"                   → 0
+  "images.unsplash.com|pravatar.cc|from 20%|pamjen e sezonalitetit"           → 0
+  "8A8079" (case-insensitive)                                                  → 0
+
+Present group — both still match, source and built output:
+  "Ju zotëroni pronën|4–5 foto|periudhat me më shumë kërkesë"  → lib/site-copy.ts, sq.html ×1
+  "aria-expanded|aria-controls|main-content"                    → present on all 6 rendered pages
+```
+
+**Functional checks — re-run against the current production build:**
+- Header anchors (`#services #process #reporting #pricing #faq`) at 1366×900: every target
+  lands 12–20px below the header's bottom edge, zero overlap — unaffected by the photography
+  or footer changes, as expected.
+- Sticky header: re-confirmed pinned at `top: 0` after a real `mouse.wheel` scroll of 2000px,
+  `scrollWidth === innerWidth` throughout — the `overflow-x: clip` fix from the first Prompt 8
+  pass is holding.
+- WhatsApp CTA consistency: 5 visible links per page/viewport, byte-identical to the locked
+  URL, across `/` and `/en` × desktop/mobile — unchanged.
+- Keyboard-only Tab walk: 25 stops, same order as before, no traps.
+- FAQ `aria-expanded` via `ariaSnapshot()`: Enter opens (`[expanded]` appears), Space closes
+  (`[expanded]` disappears) — unchanged.
+- JavaScript disabled: re-checked with a URL-decoding fix to the test script (the first pass
+  had a bug matching against `%2Fimages%2Fwebsite%2F...` instead of the decoded path, so it
+  under-reported). Corrected result: **all 8 `<img>` tags — both logos plus all 6 real property
+  photos — are present in the zero-JS HTML with correct `src` and locked `alt` text.** This is
+  a materially better result than §12's pass, which had nothing to check yet.
+- Slow 4G throttle (390×844): the server-rendered `<h1>` and hero copy arrive in the initial
+  HTML response at +160ms; the priority hero image loads at +359ms; the three below-fold
+  ServiceScope card images don't start until +1.5–1.7s. This now passes on real evidence —
+  §12's pass was trivially true because no below-fold images existed yet to race against.
+- OG/canonical/hreflang/structured-data against a deployed preview: **still blocked, unchanged
+  from §12.** `git status` shows local `main` is 2 commits ahead of `origin/main` — nothing
+  has been pushed or deployed. Not re-attempted for the same reason as before.
+
+**One local-only artifact found and ruled out, not a code defect:** capturing the 768×1024
+viewport under `networkidle`/`load` wait conditions intermittently hung on a single
+`/_next/image` request for `hero-main.webp` at one specific responsive width. Direct `curl`
+requests to the exact same URL always returned instantly (5–40ms), and the server process
+stayed healthy throughout — this is connection-pool contention between headless Chromium's
+automatic `<Link>` prefetching (of `/` and `/en`, both always in the header's initial viewport)
+and `next start`'s on-demand image resizing (no CDN/edge cache in local dev), not a rendering
+bug. Worked around it for the viewport screenshots by using `domcontentloaded` + a slow
+scroll-through + a bounded retry loop, and by giving each viewport its own page instead of
+reusing one across all four. A real deployment behind a CDN wouldn't hit this at all. Verified
+the affected image still renders correctly and completely once given time — this is purely a
+symptom of my local test harness, not something to "fix" in the app.
+
+**Required viewport screenshots — re-captured, all four clean:**
+
+| Viewport | Result |
+| --- | --- |
+| 390×844 | Clean. Zero horizontal overflow, zero broken images, all real photography visible. |
+| 430×932 | Clean. Same. |
+| 768×1024 | Clean once captured with enough settle time (see artifact note above) — real owner-report and final-cta photos both render correctly. |
+| 1366×768 | Clean. Full desktop layout with all six real photos, 3-column ServiceScope grid with photo-topped cards, 3+2 BehindEveryStay grid, no placeholder icons anywhere. |
+
+**Mid-session addition — footer placeholder cleanup (not part of the original Prompt 8 scope,
+done at your explicit request during this re-run):** the footer's bottom line rendered
+`[INSERT EXACT REGISTERED NAME] · NIPT [INSERT NIPT]` and a whole column rendered
+`[INSERT CURRENT SERVICE AREA]`, both literally, on the live site. Removed both — the footer
+is now 3 columns (logo/tagline, contact, legal links) instead of 4, and the bottom line is
+just `© {year} Prago`. The Instagram link was already correctly wired to
+`https://www.instagram.com/prago.al/`; no code change was needed there, just confirmed.
+**Important scope note:** this only touched the footer. `legalName`/`nipt`/`serviceAreaSq`
+bracket placeholders are still live in two other places that were explicitly out of scope for
+this instruction:
+1. **`/privacy` and `/terms` (both locales)** — woven into the identification sentence
+   ("`${legalName} (NIPT ${nipt})... në ${serviceAreaSq}`"). Blanking just the bracket text
+   there would leave broken grammar, so left untouched — flagging for a decision rather than
+   guessing at a rewrite.
+2. **The Organization JSON-LD** (`lib/structured-data.ts`, rendered on *every* page including
+   the homepage) — `name` and `areaServed` still emit `[INSERT EXACT REGISTERED NAME]` /
+   `[INSERT CURRENT SERVICE AREA]` verbatim into a `<script type="application/ld+json">` block.
+   Invisible to a human reader, but very much present in the page source any SEO/structured-
+   data validator would read.
+
+Precise occurrence counts confirming the above, checked against the fresh build: `sq.html` /
+`en.html` (homepage) — 4 occurrences each, all inside the JSON-LD block (2 fields × 2, the
+second copy being Next.js's normal RSC hydration-payload duplicate, not a second live copy).
+`sq/privacy.html` / `sq/terms.html` — 10 occurrences each (3 fields in the visible sentence +
+2 fields in JSON-LD, each ×2 for the same hydration-duplicate reason).
+
+**Final sign-off checklist — re-run:**
+
+- **Every published claim true/current/explainable:** unchanged from §12 — no new claims were
+  added, only real photography and a footer cleanup. Still stands.
+- **Fee sentence matches the signed agreement:** unchanged from §12 (verified in conversation
+  before the original Prompt 4 commit; `feeBasisSq` untouched since). Not re-litigated here
+  since nothing touched `lib/site-facts.ts`'s fee fields.
+- **Every property/operations image approved for publication — this is the item that actually
+  changed:** §12 said none were live. Now **six real, processed Prago photos are live and
+  correctly wired**: `hero-main.webp`, `service-listing.webp`, `service-guests.webp`,
+  `service-operations.webp`, `final-cta.webp`, `owner-report.webp` — all visually inspected
+  (again, directly, not from memory) in this session's screenshots. The **OG image is still
+  pending**: `public/og/prago-owner-management-1200x630-BASE.jpg` sits inert, not wired into
+  metadata, needs its logo/tagline overlay finished outside this repo first.
+- **No private guest/owner/booking/property data visible, including at full resolution on the
+  owner-report screenshot — re-checked against the actual real image this time, not a
+  placeholder:** `owner: Anonymized`, `property: "Coastal apartment"` (a generic descriptor,
+  not a real address or unit number), figures are presented as an explicitly-captioned example
+  ("Shembull i raportit mujor — të dhënat janë anonimizuar"). No real name, address, or booking
+  platform username visible anywhere in the image. Passes.
+- **`/en` contains none of the old removed Albanian-page claims:** re-confirmed via the content
+  search tests above — unaffected by this session's changes.
+- **Legal pages identify the correct business entity — still cannot pass.** `legalName` and
+  `nipt` are still bracket placeholders on `/privacy` and `/terms`. The footer no longer shows
+  a placeholder (per this session's explicit request), which reduces *visible* exposure
+  site-wide, but does not resolve the underlying gap on the two pages whose entire job is
+  entity identification, nor in the JSON-LD.
+- **Tested against a deployed preview, not only local dev:** still no. Unchanged from §12 —
+  nothing has been pushed since the first Prompt 8 pass; local `main` is now 2 commits ahead
+  of `origin/main`.
+
+### Outstanding blockers — updated
+
+Carried forward from §12, with photography now resolved and the footer placeholder resolved:
+
+1. ~~Real photography~~ — **done this session.** Six real images live and verified.
+2. **`legalName` / `nipt`** — still placeholders. No longer visible on the footer, but still
+   live in the `/privacy` + `/terms` body text and in the Organization JSON-LD on every page.
+3. **`serviceAreaSq`** — same status as above.
+4. **The OG image** — still `-BASE` only, needs the logo/tagline overlay finished before it
+   can replace Prompt 7's card.
+5. ~~The owner-report screenshot~~ — **done this session,** and re-verified for private data
+   against the real image, not a placeholder.
+6. **The fee-sentence contract check** — unchanged, already confirmed (see §12).
+7. **No deployment exists** — still the case; the OG/canonical/hreflang/structured-data
+   validator check still cannot run against anything real.
+8. **Privacy/terms content is still a draft** pending your/counsel's review.
+9. **No mobile equivalent for the header's in-page nav links** — unchanged, still a product
+   decision rather than a bug.
+10. `public/website-images/` (the Prompt 5.5 source staging folder) is still sitting untracked
+    inside `public/` — still worth moving or deleting.
+
 ## 5. Summary
 
 - Stack confirmed: Next.js 16 (App Router) / React 19 / Tailwind v4 (CSS-first, currently
