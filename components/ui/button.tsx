@@ -2,10 +2,10 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 const VARIANTS = {
-  primary: "bg-vishnje text-cream hover:bg-vishnje-soft",
-  ghost: "border border-charcoal bg-transparent text-charcoal hover:bg-charcoal/5",
-  cream: "bg-cream text-vishnje hover:bg-white",
-  charcoal: "bg-charcoal text-cream hover:bg-charcoal/90"
+  primary: "bg-vishnje text-cream hoverable:hover:bg-vishnje-soft",
+  ghost: "border border-charcoal bg-transparent text-charcoal hoverable:hover:bg-charcoal/5",
+  cream: "bg-cream text-vishnje hoverable:hover:bg-white",
+  charcoal: "bg-charcoal text-cream hoverable:hover:bg-charcoal/90"
 };
 
 // "cream" is the only variant used on a burgundy section background (Pricing) — its ring
@@ -49,7 +49,7 @@ export function Button({
   id?: string;
   "aria-label"?: string;
 }) {
-  const base = "inline-flex items-center justify-center rounded-card font-sans font-medium uppercase tracking-wide transition hover:-translate-y-0.5";
+  const base = "inline-flex items-center justify-center rounded-card font-sans font-medium uppercase tracking-[0.08em] transition";
 
   const classes = `${base} ${SIZES[size]} ${VARIANTS[variant]} ${FOCUS_RING[variant]} ${className}`;
 

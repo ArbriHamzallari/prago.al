@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { ProcessSteps } from "@/components/how-it-works-section";
 import { Pricing } from "@/components/pricing";
+import { ProblemSolution } from "@/components/problem-solution";
 import { ServiceScope } from "@/components/services-pricing-section";
 import { SiteHeader } from "@/components/site-header";
 import { OwnerVisibility } from "@/components/software-section";
@@ -21,6 +22,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <SiteHeader locale={locale} />
         <Hero locale={locale} />
         <TrustBand locale={locale} />
+        <ProblemSolution locale={locale} />
         <ServiceScope locale={locale} />
         <ProcessSteps locale={locale} />
         <BehindEveryStay locale={locale} />

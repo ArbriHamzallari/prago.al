@@ -43,12 +43,12 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           className={`flex min-h-[44px] min-w-[44px] shrink-0 items-center md:min-h-0 md:min-w-0 ${FOCUS_RING}`}
         >
           <Image
-            src="/logo/prago-logo-burgundy.jpeg"
+            src="/logo/prago-mark-burgundy.png"
             alt="Prago"
-            width={160}
-            height={42}
+            width={188}
+            height={257}
             priority
-            className="h-[36px] w-auto mix-blend-multiply md:h-[42px]"
+            className="h-[36px] w-auto md:h-[42px]"
           />
         </Link>
 
@@ -57,7 +57,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             <a
               key={link.href}
               href={link.href}
-              className={`whitespace-nowrap font-sans text-sm font-medium uppercase tracking-wide text-charcoal transition hover:text-vishnje ${FOCUS_RING}`}
+              className={`whitespace-nowrap font-sans text-sm font-medium uppercase tracking-wide text-charcoal transition hoverable:hover:text-vishnje ${FOCUS_RING}`}
             >
               {link.label}
             </a>
@@ -74,7 +74,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
               <Link
                 href="/"
                 onClick={() => track("language_switch", { from: locale, to: "sq" })}
-                className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-stone hover:text-charcoal md:min-h-0 md:min-w-0 ${FOCUS_RING}`}
+                className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-stone hoverable:hover:text-charcoal md:min-h-0 md:min-w-0 ${FOCUS_RING}`}
               >
                 SQ
               </Link>
@@ -88,7 +88,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
               <Link
                 href="/en"
                 onClick={() => track("language_switch", { from: locale, to: "en" })}
-                className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-stone hover:text-charcoal md:min-h-0 md:min-w-0 ${FOCUS_RING}`}
+                className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-stone hoverable:hover:text-charcoal md:min-h-0 md:min-w-0 ${FOCUS_RING}`}
               >
                 EN
               </Link>
@@ -115,7 +115,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             rel="noreferrer"
             aria-label={copy.cta}
             onClick={handleWhatsAppClick}
-            className={`flex h-11 w-11 items-center justify-center rounded-card bg-vishnje text-cream transition hover:bg-vishnje-soft md:hidden ${FOCUS_RING}`}
+            className={`flex h-11 w-11 items-center justify-center rounded-card bg-vishnje text-cream transition hoverable:hover:bg-vishnje-soft md:hidden ${FOCUS_RING}`}
           >
             <MessageCircle className="h-5 w-5" strokeWidth={2} />
           </a>

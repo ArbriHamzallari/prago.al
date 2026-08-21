@@ -2,6 +2,11 @@
 
 @config "../tailwind.config.ts";
 
+/* Use `hoverable:hover:...` instead of bare `hover:...` for any color/style hover state —
+   touch fires a "hover" on tap with no matching hover-off event, so ungated hover states get
+   stuck lifted/colored until an unrelated tap elsewhere. */
+@custom-variant hoverable (@media (hover: hover) and (pointer: fine));
+
 @theme {
   --color-vishnje: #6e1a2b;
   --color-vishnje-dark: #4e0f1e;
@@ -12,18 +17,10 @@
   --color-stone: #6f655f;
   --font-serif: var(--font-fraunces), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
+  /* Elevation scale — bigger surfaces read heavier (stronger blur + deeper shadow). */
+  --shadow-sm: 0 8px 24px -12px rgba(28, 25, 23, 0.18);
   --shadow-card: 0 20px 60px -20px rgba(28, 25, 23, 0.15);
-}
-
-:root {
-  --vishnje: #6e1a2b;
-  --vishnje-dark: #4e0f1e;
-  --vishnje-soft: #8a2738;
-  --cream: #faf6f1;
-  --sand: #e8ddd0;
-  --charcoal: #1c1917;
-  --stone: #6f655f;
-  --white: #ffffff;
+  --shadow-lg: 0 32px 80px -24px rgba(28, 25, 23, 0.22);
 }
 
 html {
@@ -36,8 +33,8 @@ html {
 }
 
 body {
-  background: var(--cream);
-  color: var(--charcoal);
+  background: var(--color-cream);
+  color: var(--color-charcoal);
   font-family: var(--font-inter), system-ui, sans-serif;
   overflow-x: clip;
 }
@@ -48,20 +45,36 @@ body {
   }
 }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-fraunces), Georgia, serif;
+/*
+  Lets a Section child bleed to the true viewport edge instead of stopping at the 1200px
+  content column — cancels both the column's centering margin and its 32px gutter. Used
+  sparingly (one or two moments), so most sections stay symmetrically boxed and the ones
+  that bleed read as a deliberate compositional break, not a layout bug.
+*/
+@media (min-width: 1024px) {
+  .bleed-edge-r {
+    margin-right: calc((0px - 32px) - max(0px, (100vw - 1200px) / 2));
+  }
 }
 
+/*
+  "Gentler, not zero" (see apple-design skill §14): restrict CSS transitions to non-movement
+  properties instead of zeroing every duration, so color/opacity cross-fades (the FAQ chevron,
+  hover color swaps) keep their normal timing and still aid comprehension — only transform-driven
+  movement (e.g. the skip-link's translateY reveal) is disabled, jumping straight to its end
+  state instead. Motion's own springs (hover lift, press feedback, section reveal, the FAQ
+  panel) are separately gated per-component via useReducedMotion().
+*/
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
   *,
   *::before,
   *::after {
+    transition-property: opacity, color, background-color, border-color, box-shadow, fill, stroke !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }
