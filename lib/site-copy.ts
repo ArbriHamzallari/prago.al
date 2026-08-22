@@ -8,6 +8,7 @@ export const SITE_COPY = {
         { label: "Si funksionon", href: "#process" },
         { label: "Raportimi", href: "#reporting" },
         { label: "Tarifa", href: "#pricing" },
+        { label: "Airbnb vs Qira", href: "/airbnb-vs-qera-mujore" },
         { label: "Pyetje", href: "#faq" }
       ],
       cta: "Vlerësimi fillestar"
@@ -175,6 +176,7 @@ export const SITE_COPY = {
         { label: "How it works", href: "#process" },
         { label: "Reporting", href: "#reporting" },
         { label: "Pricing", href: "#pricing" },
+        { label: "Airbnb vs Rent", href: "/en/airbnb-vs-qera-mujore" },
         { label: "FAQ", href: "#faq" }
       ],
       cta: "Initial assessment"

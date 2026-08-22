@@ -53,15 +53,25 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         </Link>
 
         <div className="hidden items-center gap-4 md:flex">
-          {copy.links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`whitespace-nowrap font-sans text-sm font-medium uppercase tracking-wide text-charcoal transition hoverable:hover:text-vishnje ${FOCUS_RING}`}
-            >
-              {link.label}
-            </a>
-          ))}
+          {copy.links.map((link) => {
+            const linkClassName = `whitespace-nowrap font-sans text-sm font-medium uppercase tracking-wide text-charcoal transition hoverable:hover:text-vishnje ${FOCUS_RING}`;
+
+            // Hash links stay same-page anchors (browser-native scroll); real page links
+            // (e.g. the comparison page) use next/link for client-side navigation.
+            if (link.href.startsWith("#")) {
+              return (
+                <a key={link.href} href={link.href} className={linkClassName}>
+                  {link.label}
+                </a>
+              );
+            }
+
+            return (
+              <Link key={link.href} href={link.href} className={linkClassName}>
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-2">
