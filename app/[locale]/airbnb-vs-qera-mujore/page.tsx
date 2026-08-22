@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { ComparisonFinalCta } from "@/components/comparison-final-cta";
-import { ComparisonFinancials } from "@/components/comparison-financials";
 import { ComparisonHero } from "@/components/comparison-hero";
 import { ComparisonOwnerStory } from "@/components/comparison-owner-story";
-import { ComparisonOwnerView } from "@/components/comparison-owner-view";
-import { ComparisonPropertyAlive } from "@/components/comparison-property-alive";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { SiteFooter } from "@/components/footer";
 import { SiteHeader } from "@/components/site-header";
@@ -65,9 +62,6 @@ export default async function AirbnbVsLongTermRentPage({
       <main id="main-content">
         <SiteHeader locale={locale} />
         <ComparisonHero locale={locale} />
-        <ComparisonFinancials locale={locale} />
-        <ComparisonPropertyAlive locale={locale} />
-        <ComparisonOwnerView locale={locale} />
         <ComparisonOwnerStory locale={locale} />
         <ComparisonFinalCta locale={locale} />
       </main>

@@ -7,28 +7,16 @@ export const COMPARISON_COPY: Record<
   Locale,
   {
     seo: { title: string; description: string };
-    hero: { eyebrow: string; h1: string; body: string; cta: string };
-    financial: {
-      eyebrow: string;
-      h2: string;
-      intro: string;
-      labels: { perMonth: string; perYear: string; inThisExample: string };
-      longTerm: { label: string; note: string };
-      airbnb: { label: string; grossLabel: string; platformFeeLabel: string; pragoFeeLabel: string; netLabel: string };
-      profitabilityNote: string;
+    hero: { h1: string; body: string; cta: string };
+    table: {
+      airbnbLabel: string;
+      longTermLabel: string;
+      monthlyIncomeLabel: string;
+      annualIncomeLabel: string;
+      rows: { label: string; airbnb: "check" | "cross"; longTerm: "check" | "cross" }[];
+      footnote: string;
       feeExplanation: string;
-      disclaimer: string;
-    };
-    propertyAlive: {
-      eyebrow: string;
-      h2: string;
-      body: string;
-      items: { label: string; description: string }[];
-    };
-    ownerComparison: {
-      h2: string;
-      longTerm: { label: string; items: string[] };
-      airbnb: { label: string; items: string[] };
+      profitabilityNote: string;
     };
     ownerStory: { h2: string; body: string };
     finalCta: { eyebrow: string; h2: string; body: string; cta: string };
@@ -41,75 +29,30 @@ export const COMPARISON_COPY: Record<
         "Zbuloni ndryshimin mes qirasë mujore dhe menaxhimit afatshkurtër me Prago, me një shembull të qartë të të ardhurave, kostove dhe mirëmbajtjes së pronës."
     },
     hero: {
-      eyebrow: "PËR PRONARËT",
       h1: "Airbnb apo qira mujore?",
       body: "Krahasoni qiranë mujore me menaxhimin afatshkurtër nga Prago — me një shembull të qartë financiar dhe përfitimet përtej të ardhurave.",
       cta: "MERRNI VLERËSIMIN FILLESTAR"
     },
-    financial: {
-      eyebrow: "KRAHASIM I THJESHTË",
-      h2: "Qira mujore apo qira afatshkurtër?",
-      intro:
-        "E njëjta pronë mund të funksionojë në dy mënyra shumë të ndryshme. Shikoni si ndryshon rezultati në këtë shembull ilustrues.",
-      labels: { perMonth: "/ muaj", perYear: "/ vit", inThisExample: "në këtë shembull" },
-      longTerm: {
-        label: "QIRA MUJORE",
-        note: "Të ardhur fikse mujore, pa menaxhim afatshkurtër."
-      },
-      airbnb: {
-        label: "AIRBNB + PRAGO",
-        grossLabel: "Të ardhura bruto nga rezervimet",
-        platformFeeLabel: "Komision platforme (12%)",
-        pragoFeeLabel: `Tarifa e menaxhimit Prago (${SITE_FACTS.feePercent}%)`,
-        netLabel: "Të ardhura neto për pronarin"
-      },
-      profitabilityNote:
-        "Në varësi të pronës, sezonalitetit dhe kërkesës, menaxhimi afatshkurtër mund të jetë më fitimprurës se qiraja mujore.",
+    table: {
+      airbnbLabel: "AIRBNB + PRAGO",
+      longTermLabel: "QIRA MUJORE",
+      monthlyIncomeLabel: "Të ardhura neto në muaj",
+      annualIncomeLabel: "Të ardhura neto në vit",
+      rows: [
+        { label: "Të ardhura fikse, të garantuara me kontratë", airbnb: "cross", longTerm: "check" },
+        { label: "Pastrim pas çdo qëndrimi", airbnb: "check", longTerm: "cross" },
+        { label: "Kontroll i vazhdueshëm i pronës", airbnb: "check", longTerm: "cross" },
+        { label: "Mirëmbajtje e koordinuar", airbnb: "check", longTerm: "cross" },
+        { label: "Komunikim me vizitorët", airbnb: "check", longTerm: "cross" },
+        { label: "Menaxhim listimi dhe çmimi", airbnb: "check", longTerm: "cross" },
+        { label: "Raportim mujor për pronarin", airbnb: "check", longTerm: "cross" },
+        { label: "Prona përdoret në mënyrë aktive", airbnb: "check", longTerm: "cross" }
+      ],
+      footnote:
+        "*Shembull ilustrues. Shifrat reale varen nga prona, çmimi për natë, sezonaliteti, kërkesa, numri i rezervimeve dhe kostot përkatëse. Të ardhurat nuk janë të garantuara.",
       feeExplanation: `Tarifa ${SITE_FACTS.feePercent}% e Prago llogaritet pas zbritjes së komisionit të platformës.`,
-      disclaimer:
-        "Shembull ilustrues. Shifrat reale varen nga prona, çmimi për natë, sezonaliteti, kërkesa, numri i rezervimeve dhe kostot përkatëse. Të ardhurat nuk janë të garantuara."
-    },
-    propertyAlive: {
-      eyebrow: "NUK ËSHTË VETËM ÇËSHTJE TË ARDHURASH",
-      h2: "Prona nuk lihet në pritje.",
-      body: "Me qira mujore, prona mund të kalojë muaj të tërë pa u kontrolluar nga pronari. Me menaxhimin afatshkurtër nga Prago, prona përdoret, pastrohet dhe monitorohet vazhdimisht.",
-      items: [
-        { label: "PASTRIM PAS ÇDO QËNDRIMI", description: "Prona pastrohet dhe përgatitet për vizitorin e radhës." },
-        {
-          label: "KONTROLL I VAZHDUESHËM",
-          description: "Gjendja e pronës ndiqet gjatë gjithë kohës dhe problemet identifikohen më herët."
-        },
-        { label: "MIRËMBAJTJE NË VEND", description: "Çështjet operative dhe mirëmbajtja koordinohen kur nevojiten." },
-        {
-          label: "PRONA MBETET AKTIVE",
-          description: "Prona nuk lihet thjesht me një qiramarrës dhe një kontratë. Ajo përdoret, kontrollohet dhe kujdeset vazhdimisht."
-        }
-      ]
-    },
-    ownerComparison: {
-      h2: "Çfarë merrni realisht si pronar?",
-      longTerm: {
-        label: "QIRA MUJORE",
-        items: [
-          "Të ardhura fikse",
-          "Më pak ndërhyrje në menaxhim",
-          "Kontroll më pak i shpeshtë i pronës",
-          "Mirëmbajtja zakonisht reaktive",
-          "Prona përdoret nga një qiramarrës për periudhë të gjatë"
-        ]
-      },
-      airbnb: {
-        label: "AIRBNB + PRAGO",
-        items: [
-          "Potencial për të ardhura më të larta",
-          "Menaxhim i listimit dhe çmimeve",
-          "Komunikim me vizitorët",
-          "Pastrim dhe përgatitje pas qëndrimeve",
-          "Ndjekje e mirëmbajtjes",
-          "Raportim për pronarin",
-          "Prona kontrollohet dhe përdoret vazhdimisht"
-        ]
-      }
+      profitabilityNote:
+        "Në varësi të pronës, sezonalitetit dhe kërkesës, menaxhimi afatshkurtër mund të jetë më fitimprurës se qiraja mujore."
     },
     ownerStory: {
       h2: "Prona juaj mund të bëjë më shumë se të presë qiranë.",
@@ -129,74 +72,30 @@ export const COMPARISON_COPY: Record<
         "See the difference between long-term renting and short-term management with Prago, with a clear example of income, costs, and property upkeep."
     },
     hero: {
-      eyebrow: "FOR PROPERTY OWNERS",
       h1: "Airbnb or long-term rent?",
       body: "Compare long-term renting with short-term management by Prago — with a clear financial example and the benefits beyond income.",
       cta: "GET AN INITIAL ASSESSMENT ON WHATSAPP"
     },
-    financial: {
-      eyebrow: "SIMPLE COMPARISON",
-      h2: "Long-term rent or short-term rental?",
-      intro: "The same property can work in two very different ways. See how the result changes in this illustrative example.",
-      labels: { perMonth: "/ month", perYear: "/ year", inThisExample: "in this example" },
-      longTerm: {
-        label: "LONG-TERM RENT",
-        note: "Fixed monthly income, no short-term management."
-      },
-      airbnb: {
-        label: "AIRBNB + PRAGO",
-        grossLabel: "Gross revenue from bookings",
-        platformFeeLabel: "Platform commission (12%)",
-        pragoFeeLabel: `Prago management fee (${SITE_FACTS.feePercent}%)`,
-        netLabel: "Net income for the owner"
-      },
-      profitabilityNote:
-        "Depending on the property, seasonality, and demand, short-term management can be more profitable than long-term rent.",
+    table: {
+      airbnbLabel: "AIRBNB + PRAGO",
+      longTermLabel: "LONG-TERM RENT",
+      monthlyIncomeLabel: "Net income per month",
+      annualIncomeLabel: "Net income per year",
+      rows: [
+        { label: "Fixed income, guaranteed by contract", airbnb: "cross", longTerm: "check" },
+        { label: "Cleaned after every stay", airbnb: "check", longTerm: "cross" },
+        { label: "Continuous property oversight", airbnb: "check", longTerm: "cross" },
+        { label: "Coordinated maintenance", airbnb: "check", longTerm: "cross" },
+        { label: "Guest communication", airbnb: "check", longTerm: "cross" },
+        { label: "Listing and price management", airbnb: "check", longTerm: "cross" },
+        { label: "Monthly owner reporting", airbnb: "check", longTerm: "cross" },
+        { label: "Property used actively", airbnb: "check", longTerm: "cross" }
+      ],
+      footnote:
+        "*Illustrative example. Actual figures depend on the property, nightly rate, seasonality, demand, number of bookings, and related costs. Income is not guaranteed.",
       feeExplanation: `The Prago ${SITE_FACTS.feePercent}% fee is calculated after deducting the platform commission.`,
-      disclaimer:
-        "Illustrative example. Actual figures depend on the property, nightly rate, seasonality, demand, number of bookings, and related costs. Income is not guaranteed."
-    },
-    propertyAlive: {
-      eyebrow: "IT'S NOT ONLY ABOUT INCOME",
-      h2: "The property isn't left waiting.",
-      body: "With long-term rent, a property can go months without the owner checking on it. With short-term management by Prago, the property is used, cleaned, and monitored continuously.",
-      items: [
-        { label: "CLEANED AFTER EVERY STAY", description: "The property is cleaned and prepared for the next guest." },
-        {
-          label: "CONTINUOUS OVERSIGHT",
-          description: "The property's condition is tracked at all times, and issues are identified earlier."
-        },
-        { label: "ON-SITE MAINTENANCE", description: "Operational matters and maintenance are coordinated when needed." },
-        {
-          label: "THE PROPERTY STAYS ACTIVE",
-          description: "The property isn't simply left with a tenant and a contract. It is used, checked, and cared for continuously."
-        }
-      ]
-    },
-    ownerComparison: {
-      h2: "What do you actually get as an owner?",
-      longTerm: {
-        label: "LONG-TERM RENT",
-        items: [
-          "Fixed income",
-          "Less involvement in management",
-          "Less frequent property checks",
-          "Maintenance is usually reactive",
-          "The property is used by one tenant over a long period"
-        ]
-      },
-      airbnb: {
-        label: "AIRBNB + PRAGO",
-        items: [
-          "Potential for higher income",
-          "Listing and pricing management",
-          "Guest communication",
-          "Cleaning and preparation after stays",
-          "Maintenance follow-up",
-          "Owner reporting",
-          "The property is checked and used continuously"
-        ]
-      }
+      profitabilityNote:
+        "Depending on the property, seasonality, and demand, short-term management can be more profitable than long-term rent."
     },
     ownerStory: {
       h2: "Your property can do more than wait for the rent.",
