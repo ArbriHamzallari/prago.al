@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
+import { Menu, MessageCircle, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,6 +15,7 @@ const FOCUS_RING =
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const copy = locale === "en" ? SITE_COPY.en.nav : SITE_COPY.sq.nav;
   const whatsappUrl = getWhatsAppUrl();
   const pathname = usePathname();
@@ -26,9 +27,34 @@ export function SiteHeader({ locale }: { locale: Locale }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close the mobile menu whenever the route changes (e.g. a link inside it navigated).
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
+
   const homeHref = locale === "en" ? "/en" : "/";
   const isHome = pathname === homeHref;
   const handleWhatsAppClick = () => track("cta_whatsapp_click", { position: "header", locale });
+
+  // Hash links only work as same-page anchors while already on the homepage — elsewhere
+  // (e.g. the comparison page) they need to navigate back to the homepage first.
+  const resolveHref = (href: string) => (href.startsWith("#") && !isHome ? `${homeHref}${href}` : href);
 
   return (
     <header
@@ -58,28 +84,18 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         <div className="hidden items-center gap-4 md:flex">
           {copy.links.map((link) => {
             const linkClassName = `whitespace-nowrap font-sans text-sm font-medium uppercase tracking-wide text-charcoal transition hoverable:hover:text-vishnje ${FOCUS_RING}`;
+            const href = resolveHref(link.href);
 
-            // Hash links only work as same-page anchors while already on the homepage —
-            // elsewhere (e.g. the comparison page) they need to navigate back to the
-            // homepage first, then land on that section.
-            if (link.href.startsWith("#")) {
-              if (isHome) {
-                return (
-                  <a key={link.href} href={link.href} className={linkClassName}>
-                    {link.label}
-                  </a>
-                );
-              }
-
+            if (link.href.startsWith("#") && isHome) {
               return (
-                <Link key={link.href} href={`${homeHref}${link.href}`} className={linkClassName}>
+                <a key={link.href} href={href} className={linkClassName}>
                   {link.label}
-                </Link>
+                </a>
               );
             }
 
             return (
-              <Link key={link.href} href={link.href} className={linkClassName}>
+              <Link key={link.href} href={href} className={linkClassName}>
                 {link.label}
               </Link>
             );
@@ -141,8 +157,94 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           >
             <MessageCircle className="h-5 w-5" strokeWidth={2} />
           </a>
+
+          <button
+            type="button"
+            aria-label={menuOpen ? (locale === "en" ? "Close menu" : "Mbyll menynë") : locale === "en" ? "Open menu" : "Hap menynë"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav-panel"
+            onClick={() => setMenuOpen((open) => !open)}
+            className={`flex h-11 w-11 items-center justify-center rounded-card border border-charcoal/15 text-charcoal transition hoverable:hover:bg-charcoal/5 md:hidden ${FOCUS_RING}`}
+          >
+            {menuOpen ? <X className="h-5 w-5" strokeWidth={2} /> : <Menu className="h-5 w-5" strokeWidth={2} />}
+          </button>
         </div>
       </nav>
+
+      <div
+        id="mobile-nav-panel"
+        className={`fixed inset-0 top-[64px] z-40 bg-vishnje transition-opacity duration-200 md:hidden ${
+          menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        <div className="flex h-full flex-col overflow-y-auto px-[20px] pb-[calc(24px+env(safe-area-inset-bottom))] pt-[24px]">
+          <ul className="flex flex-col">
+            {copy.links.map((link) => (
+              <li key={link.href} className="border-b border-cream/15">
+                <Link
+                  href={resolveHref(link.href)}
+                  onClick={() => setMenuOpen(false)}
+                  className={`block py-4 font-serif text-2xl font-medium text-cream transition hoverable:hover:text-cream/70 ${FOCUS_RING}`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-8">
+            <Button
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              variant="cream"
+              className="w-full"
+              onClick={() => {
+                handleWhatsAppClick();
+                setMenuOpen(false);
+              }}
+            >
+              {copy.cta}
+            </Button>
+          </div>
+
+          <div className="mt-auto flex items-center gap-2 pt-8 font-sans text-sm font-semibold uppercase tracking-wide">
+            {locale === "sq" ? (
+              <span className="text-cream" aria-current="page">
+                SQ
+              </span>
+            ) : (
+              <Link
+                href="/"
+                onClick={() => {
+                  track("language_switch", { from: locale, to: "sq" });
+                  setMenuOpen(false);
+                }}
+                className={`inline-flex min-h-[44px] items-center text-cream/60 hoverable:hover:text-cream ${FOCUS_RING}`}
+              >
+                SQ
+              </Link>
+            )}
+            <span className="text-cream/40">|</span>
+            {locale === "en" ? (
+              <span className="text-cream" aria-current="page">
+                EN
+              </span>
+            ) : (
+              <Link
+                href="/en"
+                onClick={() => {
+                  track("language_switch", { from: locale, to: "en" });
+                  setMenuOpen(false);
+                }}
+                className={`inline-flex min-h-[44px] items-center text-cream/60 hoverable:hover:text-cream ${FOCUS_RING}`}
+              >
+                EN
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
     </header>
   );
 }
