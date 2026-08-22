@@ -3,6 +3,7 @@
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
@@ -16,6 +17,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   const [scrolled, setScrolled] = useState(false);
   const copy = locale === "en" ? SITE_COPY.en.nav : SITE_COPY.sq.nav;
   const whatsappUrl = getWhatsAppUrl();
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -25,6 +27,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   }, []);
 
   const homeHref = locale === "en" ? "/en" : "/";
+  const isHome = pathname === homeHref;
   const handleWhatsAppClick = () => track("cta_whatsapp_click", { position: "header", locale });
 
   return (
@@ -56,13 +59,22 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           {copy.links.map((link) => {
             const linkClassName = `whitespace-nowrap font-sans text-sm font-medium uppercase tracking-wide text-charcoal transition hoverable:hover:text-vishnje ${FOCUS_RING}`;
 
-            // Hash links stay same-page anchors (browser-native scroll); real page links
-            // (e.g. the comparison page) use next/link for client-side navigation.
+            // Hash links only work as same-page anchors while already on the homepage —
+            // elsewhere (e.g. the comparison page) they need to navigate back to the
+            // homepage first, then land on that section.
             if (link.href.startsWith("#")) {
+              if (isHome) {
+                return (
+                  <a key={link.href} href={link.href} className={linkClassName}>
+                    {link.label}
+                  </a>
+                );
+              }
+
               return (
-                <a key={link.href} href={link.href} className={linkClassName}>
+                <Link key={link.href} href={`${homeHref}${link.href}`} className={linkClassName}>
                   {link.label}
-                </a>
+                </Link>
               );
             }
 
