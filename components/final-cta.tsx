@@ -1,54 +1,53 @@
 "use client";
 
-import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { Button } from "./ui/button";
-import { BodyText } from "./ui/body-text";
-import { Section } from "./ui/section";
+import { GradedPhoto } from "./ui/graded-photo";
 import { SerifHeading } from "./ui/serif-heading";
 
 // Locked alt text — given as a single Albanian string with no English variant, so it's used
 // unchanged on both locales rather than inventing a translation (see rebuild-adaptation-plan.md).
 const IMAGE_ALT = "Ballkon i pronës me pamje nga qyteti dhe pishina";
 
+// One image, one headline, one button — a campaign close, not a card competing with the photo.
 export function FinalCta({ locale }: { locale: Locale }) {
   const copy = locale === "en" ? SITE_COPY.en.finalCta : SITE_COPY.sq.finalCta;
   const whatsappUrl = getWhatsAppUrl();
 
   return (
-    <Section id="final-cta" bg="cream" ariaLabelledby="final-cta-title">
-      <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-        <div>
-          <SerifHeading as="h2" size="h2" id="final-cta-title" className="text-charcoal">
-            {copy.h2}
-          </SerifHeading>
-          <BodyText className="mt-5 text-stone">{copy.body}</BodyText>
-          <div className="mt-8">
-            <Button
-              href={whatsappUrl}
-              target="_blank"
-              rel="noreferrer"
-              variant="primary"
-              onClick={() => track("cta_whatsapp_click", { position: "final", locale })}
-            >
-              {copy.cta}
-            </Button>
-          </div>
-          <p className="mt-4 font-sans text-sm leading-relaxed text-stone">{copy.disclaimer}</p>
+    <section id="final-cta" aria-labelledby="final-cta-title" className="relative h-[70vh] min-h-[480px] w-full">
+      <GradedPhoto
+        src="/images/website/final-cta.webp"
+        alt={IMAGE_ALT}
+        fill
+        tintFrom="top"
+        className="object-cover"
+        sizes="100vw"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/25 to-transparent"
+      />
+      <div className="absolute inset-x-0 bottom-0 mx-auto max-w-content px-[20px] pb-[56px] md:px-[32px] lg:px-[40px] lg:pb-[72px]">
+        <SerifHeading as="h2" size="h2" id="final-cta-title" className="max-w-[640px] text-cream">
+          {copy.h2}
+        </SerifHeading>
+        <p className="mt-4 max-w-[520px] font-sans text-base leading-relaxed text-cream/85">{copy.body}</p>
+        <div className="mt-7">
+          <Button
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            variant="cream"
+            onClick={() => track("cta_whatsapp_click", { position: "final", locale })}
+          >
+            {copy.cta}
+          </Button>
         </div>
-
-        <div className="relative aspect-[4/3] overflow-hidden rounded-card lg:aspect-[4/5]">
-          <Image
-            src="/images/website/final-cta.webp"
-            alt={IMAGE_ALT}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-          />
-        </div>
+        <p className="mt-4 max-w-[520px] font-sans text-xs leading-relaxed text-cream/60">{copy.disclaimer}</p>
       </div>
-    </Section>
+    </section>
   );
 }

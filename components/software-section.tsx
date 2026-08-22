@@ -1,7 +1,9 @@
-import Image from "next/image";
 import { SITE_COPY, type Locale } from "@/lib/site-copy";
 import { BodyText } from "./ui/body-text";
 import { EyebrowLabel } from "./ui/eyebrow-label";
+import { GradedPhoto } from "./ui/graded-photo";
+import { HoverLift } from "./ui/hover-lift";
+import { Panel } from "./ui/panel";
 import { Section } from "./ui/section";
 import { SerifHeading } from "./ui/serif-heading";
 
@@ -14,36 +16,40 @@ export function OwnerVisibility({ locale }: { locale: Locale }) {
 
   return (
     <Section id="reporting" bg="cream" ariaLabelledby="reporting-title">
-      <div className="flex flex-col gap-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-10">
-        <div className="lg:order-2 lg:col-span-5">
-          <EyebrowLabel>{copy.eyebrow}</EyebrowLabel>
-          <SerifHeading as="h2" size="h2" id="reporting-title" className="mt-4 text-charcoal">
-            {copy.h2}
-          </SerifHeading>
-          <BodyText className="mt-5 text-stone">{copy.body}</BodyText>
-          <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-2 font-sans text-sm text-charcoal">
-            {copy.items.map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-vishnje" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lg:order-1 lg:col-span-7">
-          <div className="relative aspect-[1800/1125] overflow-hidden rounded-card shadow-card">
-            <Image
-              src="/images/website/owner-report.webp"
-              alt={IMAGE_ALT}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 58vw, 100vw"
-            />
+      <Panel bg="vishnje-dark">
+        <div className="flex flex-col gap-10 lg:grid lg:grid-cols-12 lg:items-center lg:gap-10">
+          <div className="lg:order-2 lg:col-span-5">
+            <EyebrowLabel tone="cream">{copy.eyebrow}</EyebrowLabel>
+            <SerifHeading as="h2" size="h2" id="reporting-title" className="mt-4 text-cream">
+              {copy.h2}
+            </SerifHeading>
+            <BodyText className="mt-5 text-cream/70">{copy.body}</BodyText>
+            <p className="mt-6 font-sans text-sm text-cream/50">{copy.items.join("  ·  ")}</p>
           </div>
-          <p className="mt-3 font-sans text-sm italic text-stone">{copy.caption}</p>
+
+          <div className="lg:order-1 lg:col-span-7">
+            <HoverLift className="overflow-hidden rounded-card shadow-lg transition-shadow duration-300">
+              {/* Restrained browser-chrome frame — reads as "a real product", not a fake mockup. */}
+              <div className="flex items-center gap-1.5 bg-charcoal px-4 py-2.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-cream/25" />
+                <span className="h-2.5 w-2.5 rounded-full bg-cream/25" />
+                <span className="h-2.5 w-2.5 rounded-full bg-cream/25" />
+              </div>
+              <div className="relative aspect-[1800/1125]">
+                <GradedPhoto
+                  src="/images/website/owner-report.webp"
+                  alt={IMAGE_ALT}
+                  fill
+                  tint={false}
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 58vw, 100vw"
+                />
+              </div>
+            </HoverLift>
+            <p className="mt-3 font-sans text-sm italic text-cream/60">{copy.caption}</p>
+          </div>
         </div>
-      </div>
+      </Panel>
     </Section>
   );
 }

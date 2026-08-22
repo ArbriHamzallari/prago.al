@@ -56,12 +56,12 @@ export function FloatingWhatsApp({ locale }: { locale: Locale }) {
       aria-hidden={!visible}
       tabIndex={visible ? undefined : -1}
       onClick={() => track("cta_whatsapp_click", { position: "floating_mobile", locale })}
-      className={`fixed inset-x-4 bottom-[calc(12px+env(safe-area-inset-bottom))] z-40 flex min-h-[56px] items-center justify-center gap-2 rounded-card bg-vishnje text-cream shadow-card transition-opacity duration-200 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-cream md:hidden ${
+      className={`fixed inset-x-4 bottom-[calc(12px+env(safe-area-inset-bottom))] z-40 flex min-h-[56px] items-center justify-center gap-2 rounded-card bg-vishnje text-cream shadow-sm transition-opacity duration-200 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-cream md:hidden ${
         visible ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
       <MessageCircle className="h-5 w-5" strokeWidth={2} />
-      <span className="font-sans text-sm font-semibold uppercase tracking-wide">{label}</span>
+      <span className="font-sans text-sm font-semibold uppercase tracking-[0.08em]">{label}</span>
     </a>
   );
 }

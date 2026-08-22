@@ -46,7 +46,7 @@ export function Pricing({ locale }: { locale: Locale }) {
         </div>
 
         <div className="lg:order-1 lg:col-span-5">
-          <p className="font-serif text-[96px] font-medium leading-none text-cream md:text-[140px] lg:text-[160px]">
+          <p className="font-sans text-[96px] font-bold leading-none tracking-[-0.04em] text-cream md:text-[140px] lg:text-[160px]">
             {feeLabel}
           </p>
         </div>
