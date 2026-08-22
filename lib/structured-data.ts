@@ -16,7 +16,7 @@ export function getStructuredData(locale: Locale) {
         "@type": "Organization",
         name: SITE_FACTS.legalName,
         url: SITE_FACTS.url,
-        logo: `${SITE_FACTS.url}/logo/prago-logo-burgundy.jpeg`,
+        logo: `${SITE_FACTS.url}/logo/prago-logo-schema.png`,
         telephone: SITE_FACTS.whatsappDisplay,
         email: SITE_FACTS.email,
         areaServed: SITE_FACTS.serviceAreaSq
@@ -26,6 +26,26 @@ export function getStructuredData(locale: Locale) {
         name: "Prago",
         url: SITE_FACTS.url,
         inLanguage: locale === "en" ? "en" : "sq-AL"
+      }
+    ]
+  };
+}
+
+// Scoped to /airbnb-vs-qera-mujore only — injected on that page, not site-wide. Does not
+// touch or duplicate the Organization/WebSite graph above.
+export function getComparisonPageStructuredData(locale: Locale, title: string, description: string) {
+  const path = locale === "en" ? "/en/airbnb-vs-qera-mujore" : "/airbnb-vs-qera-mujore";
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        name: title,
+        description,
+        url: `${SITE_FACTS.url}${path}`,
+        inLanguage: locale === "en" ? "en" : "sq-AL",
+        isPartOf: { "@type": "WebSite", name: "Prago", url: SITE_FACTS.url }
       }
     ]
   };

@@ -8,6 +8,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/`, lastModified: new Date() },
     { url: `${base}/en`, lastModified: new Date() },
     { url: `${base}/privacy`, lastModified: new Date() },
-    { url: `${base}/terms`, lastModified: new Date() }
+    { url: `${base}/terms`, lastModified: new Date() },
+    { url: `${base}/airbnb-vs-qera-mujore`, lastModified: new Date() },
+    { url: `${base}/en/airbnb-vs-qera-mujore`, lastModified: new Date() }
   ];
 }

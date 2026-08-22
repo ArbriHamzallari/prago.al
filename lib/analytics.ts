@@ -1,6 +1,14 @@
 import type { Locale } from "./site-copy";
 
-type CtaPosition = "hero" | "header" | "process" | "pricing" | "final" | "floating_mobile";
+type CtaPosition =
+  | "hero"
+  | "header"
+  | "process"
+  | "pricing"
+  | "final"
+  | "floating_mobile"
+  | "comparison_hero"
+  | "comparison_final";
 
 type AnalyticsEvent =
   | { name: "cta_whatsapp_click"; payload: { position: CtaPosition; locale: Locale } }

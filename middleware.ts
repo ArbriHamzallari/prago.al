@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 // Bare (unprefixed) paths that are Albanian pages living under app/[locale]/.
 // Extend this list as new top-level pages are added; "/" always stays implicit.
-const SQ_ROOT_PATHS = ["/", "/privacy", "/terms"];
+const SQ_ROOT_PATHS = ["/", "/privacy", "/terms", "/airbnb-vs-qera-mujore"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -23,5 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/sq/:path*", "/privacy", "/terms"]
+  matcher: ["/", "/sq/:path*", "/privacy", "/terms", "/airbnb-vs-qera-mujore"]
 };
